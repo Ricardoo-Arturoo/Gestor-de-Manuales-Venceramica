@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const path = require('path'); // Movimos esta librería al principio junto con las demás
 
 const app = express();
 
@@ -49,6 +50,42 @@ app.post('/api/login', (req, res) => {
     } else {
       res.status(401).json({ message: 'Correo o contraseña incorrectos' });
     }
+  });
+});
+
+// Ruta para descargar el PDF
+app.get('/api/descargar/:nombreArchivo', (req, res) => {
+  // Obtenemos el nombre del archivo de la URL
+  const nombreArchivo = req.params.nombreArchivo;
+  
+  // Construimos la ruta exacta donde está guardado el PDF en tu PC
+  const rutaArchivo = path.join(__dirname, 'uploads', 'pdfs', nombreArchivo);
+
+  // res.download() fuerza al navegador a descargar el archivo en lugar de solo abrirlo
+  res.download(rutaArchivo, (err) => {
+    if (err) {
+      console.error("Error al descargar el archivo:", err);
+      res.status(404).json({ message: "El manual no fue encontrado" });
+    }
+  });
+});
+
+// ==========================================
+// NUEVA RUTA DINÁMICA: Productos por Categoría
+// ==========================================
+app.get('/api/productos/:categoria', (req, res) => {
+  const categoria = req.params.categoria;
+  
+  // Consulta SQL filtrando por la columna 'categoria'
+  const sql = 'SELECT * FROM productos WHERE categoria = ?';
+  
+  db.query(sql, [categoria], (err, resultados) => {
+    if (err) {
+      console.error("Error consultando productos:", err);
+      return res.status(500).json({ error: "Error en la base de datos" });
+    }
+    // Devuelve los productos encontrados al frontend en formato JSON
+    res.json(resultados);
   });
 });
 

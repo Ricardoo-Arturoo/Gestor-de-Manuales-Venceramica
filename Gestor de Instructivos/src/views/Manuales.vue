@@ -1,3 +1,46 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Sidebar from '../components/Sidebar.vue'
+import TarjetaCategoria from '../components/TarjetaCategoria.vue'
+
+const router = useRouter()
+
+// Arreglo de categorías con las imágenes dinámicas
+const categorias = ref([
+  { id: 1, nombre: 'Inodoros', imagen: '/img/inodoros.png' },
+  { id: 2, nombre: 'Lavamanos', imagen: '/img/lavamanos.png' },
+  { id: 3, nombre: 'Bidet y Urinarios', imagen: '/img/bidet.png' },
+  { id: 4, nombre: 'Herrajes', imagen: '/img/herrajes.png' },
+  { id: 5, nombre: 'Asientos', imagen: '/img/asientos.png' },
+  { id: 6, nombre: 'Otros', imagen: null } 
+])
+
+// Lógica de redirección al hacer clic en una tarjeta
+const seleccionarCategoria = (nombre) => {
+  console.log(`Abriendo categoría: ${nombre}`)
+  
+  if (nombre === 'Inodoros') {
+    // Redirige a la vista que acabamos de crear
+    router.push('/manuales/inodoros')
+  } 
+  else if (nombre === 'Herrajes') {
+    router.push('/manuales/herrajes')
+  }
+  else {
+    // Para las demás categorías, creamos una ruta dinámica. 
+    // Ejemplo: "Bidet y Urinarios" se convierte en "bidet-y-urinarios"
+    const rutaFormateada = nombre.toLowerCase().replace(/ y /g, '-y-').replace(/ /g, '-')
+    
+    // Descomenta la siguiente línea cuando vayas creando las demás vistas:
+    // router.push(`/manuales/${rutaFormateada}`)
+    
+    // Mientras tanto, un pequeño aviso para pruebas:
+    alert(`La vista para la categoría "${nombre}" está en construcción.`)
+  }
+}
+</script>
+
 <template>
   <div class="flex h-screen w-full bg-gray-50 font-sans overflow-hidden">
     
@@ -35,44 +78,6 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import Sidebar from '../components/Sidebar.vue'
-import TarjetaCategoria from '../components/TarjetaCategoria.vue'
-
-const router = useRouter()
-
-// Arreglo de categorías con las imágenes dinámicas
-const categorias = ref([
-  { id: 1, nombre: 'Inodoros', imagen: '/img/inodoros.png' },
-  { id: 2, nombre: 'Lavamanos', imagen: '/img/lavamanos.png' },
-  { id: 3, nombre: 'Bidet y Urinarios', imagen: '/img/bidet.png' },
-  { id: 4, nombre: 'Herrajes', imagen: '/img/herrajes.png' },
-  { id: 5, nombre: 'Asientos', imagen: '/img/asientos.png' },
-  { id: 6, nombre: 'Otros', imagen: null } 
-])
-
-// Lógica de redirección al hacer clic en una tarjeta
-const seleccionarCategoria = (nombre) => {
-  console.log(`Abriendo categoría: ${nombre}`)
-  
-  if (nombre === 'Inodoros') {
-    // Redirige a la vista que acabamos de crear
-    router.push('/manuales/inodoros')
-  } else {
-    // Para las demás categorías, creamos una ruta dinámica. 
-    // Ejemplo: "Bidet y Urinarios" se convierte en "bidet-y-urinarios"
-    const rutaFormateada = nombre.toLowerCase().replace(/ y /g, '-y-').replace(/ /g, '-')
-    
-    // Descomenta la siguiente línea cuando vayas creando las demás vistas:
-    // router.push(`/manuales/${rutaFormateada}`)
-    
-    // Mientras tanto, un pequeño aviso para pruebas:
-    alert(`La vista para la categoría "${nombre}" está en construcción.`)
-  }
-}
-</script>
 
 <style scoped>
 /* Animaciones de entrada fluidas */

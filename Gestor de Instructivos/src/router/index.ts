@@ -3,6 +3,7 @@ import Login from '../views/Login.vue'
 import Inicio from '../views/Inicio.vue'
 import Manuales from '../views/Manuales.vue'
 import Inodoros from '../views/Manuales/Inodoros.vue'
+import Herrajes from '../views/Manuales/Herrajes.vue'
 
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/manuales/inodoros',         // Ruta para los inodoros
       name: 'inodoros',
       component: Inodoros
+    },
+    {
+      path: '/manuales/herrajes',         // Ruta para los herrajes
+      name: 'herrajes',
+      component: Herrajes
     }
 
   ],
