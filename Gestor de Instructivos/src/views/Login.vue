@@ -32,8 +32,8 @@ const handleLogin = async () => {
     const data = await response.json()
 
     if (response.ok) {
-      // Si las credenciales son correctas, guardamos en localStorage
-      localStorage.setItem('usuario_autenticado', JSON.stringify({
+      // Guardamos la sesión en localStorage
+      localStorage.setItem('usuarioLogueado', JSON.stringify({
         name: data.user.name,
         role: data.user.role,
         email: data.user.email
@@ -66,8 +66,8 @@ const handleGuest = () => {
   errorMessage.value = ''
   successMessage.value = 'Entrando como invitado... redirigiendo.'
   
-  // Limpiamos cualquier sesión guardada
-  localStorage.removeItem('usuario_autenticado')
+  // 🔥 CAMBIO AQUÍ: Limpiamos la misma clave 'usuarioLogueado'
+  localStorage.removeItem('usuarioLogueado')
   
   setTimeout(() => {
     router.push('/inicio')

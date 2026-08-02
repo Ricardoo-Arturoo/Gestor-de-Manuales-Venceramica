@@ -4,107 +4,115 @@ import Sidebar from "@/components/Sidebar.vue"
 import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
+import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
 
-// 1. Estados
 const herrajesTanque = ref([])
 const fluxometros = ref([])
 const repuestos = ref([])
 const cargando = ref(true)
+const esAdmin = ref(false)
 
-// 2. Fetch a la base de datos
+// Estado del Modal
+const mostrarModal = ref(false)
+const tipoSeleccionadoParaModal = ref('') // Guardará si es Tanque, Fluxómetro o Repuesto
+
 const cargarHerrajes = async () => {
   try {
-    // 🔥 AQUÍ ESTÁ EL CAMBIO: Ahora llamamos a la ruta dinámica apuntando a la categoría 'Herrajes'
     const respuesta = await fetch('http://localhost:3000/api/productos/Herrajes')
     if (!respuesta.ok) throw new Error('Error al conectar con el servidor')
     
     const datosObtenidos = await respuesta.json()
 
-    // Filtramos según la columna "tipo" en tu base de datos
     herrajesTanque.value = datosObtenidos.filter(h => h.tipo === 'Tanque')
     fluxometros.value = datosObtenidos.filter(h => h.tipo === 'Fluxómetro')
     repuestos.value = datosObtenidos.filter(h => h.tipo === 'Repuesto')
 
   } catch (error) {
-    console.error('Error cargando los herrajes:', error)
-    alert('Hubo un problema cargando los productos.')
+    console.error('Error:', error)
   } finally {
     cargando.value = false
   }
 }
 
 onMounted(() => {
+  const usuario = localStorage.getItem('usuarioLogueado')
+  if (usuario) esAdmin.value = true 
   cargarHerrajes()
 })
 
-// 3. Lógica de descarga
 const procesarDescarga = (archivoPdf) => {
-  if (!archivoPdf) {
-    alert("Este producto aún no tiene un manual asignado.")
-    return
-  }
+  if (!archivoPdf) return alert("Este producto aún no tiene un manual asignado.")
   window.open(`http://localhost:3000/api/descargar/${archivoPdf}`, '_blank')
+}
+
+const eliminarProducto = async (id) => {
+  if(confirm('¿Estás seguro de que deseas eliminar este producto y su manual?')) {
+    try {
+      await fetch(`http://localhost:3000/api/productos/${id}`, { method: 'DELETE' })
+      herrajesTanque.value = herrajesTanque.value.filter(item => item.id !== id)
+      fluxometros.value = fluxometros.value.filter(item => item.id !== id)
+      repuestos.value = repuestos.value.filter(item => item.id !== id)
+    } catch (error) {
+      console.error("Error:", error)
+    }
+  }
+}
+
+const editarProducto = (producto) => {
+  console.log("Editar:", producto.nombre)
+}
+
+// Abrir modal y asignar el tipo correcto según la sección
+const abrirFormularioAgregar = (seccion) => {
+  if (seccion === 'Herrajes para Tanques') tipoSeleccionadoParaModal.value = 'Tanque'
+  else if (seccion === 'Fluxómetros') tipoSeleccionadoParaModal.value = 'Fluxómetro'
+  else if (seccion === 'Repuestos') tipoSeleccionadoParaModal.value = 'Repuesto'
+  
+  mostrarModal.value = true
 }
 </script>
 
 <template>
   <div class="flex h-screen w-full bg-gray-50 font-sans overflow-hidden">
-    
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      
-      <!-- Componente Header (Incluye botón volver, título y texto) -->
-      <HeaderVista 
-        titulo="Manuales de Herrajes" 
-        descripcion="Seleccione el modelo de herraje o fluxómetro para ver o descargar su manual."
-      />
+      <HeaderVista titulo="Manuales de Herrajes" descripcion="Seleccione el modelo de herraje o fluxómetro para ver o descargar su manual." />
 
-      <!-- Componente de Carga -->
       <Cargador v-if="cargando" mensaje="Cargando herrajes..." />
 
-      <!-- Contenido (Solo se muestra si ya cargó) -->
       <div v-else>
-        
-        <!-- Reutilizamos el componente de Sección para cada tipo de herraje -->
         <SeccionTarjetas 
           tituloSeccion="Herrajes para Tanques" 
           :productos="herrajesTanque" 
-          @descargar="procesarDescarga" 
+          :estaLogueado="esAdmin"
+          @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
         <SeccionTarjetas 
           tituloSeccion="Fluxómetros" 
           :productos="fluxometros" 
-          @descargar="procesarDescarga" 
+          :estaLogueado="esAdmin"
+          @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
 
         <SeccionTarjetas 
           tituloSeccion="Repuestos" 
           :productos="repuestos" 
-          @descargar="procesarDescarga" 
+          :estaLogueado="esAdmin"
+          @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
-
       </div>
     </main>
+
+    <!-- Usamos nuestro componente Modal reutilizable -->
+    <ModalAgregarProducto 
+      :mostrar="mostrarModal"
+      categoria="Herrajes"
+      :tipo="tipoSeleccionadoParaModal"
+      @cerrar="mostrarModal = false"
+      @guardado="cargarHerrajes"
+    />
+
   </div>
 </template>
-
-<style scoped>
-/* Solo necesitamos estas animaciones globales aquí si los subcomponentes las usan directamente, 
-   o puedes pasarlas a tu archivo global de CSS/Tailwind para no repetirlas */
-.animacion-entrada {
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out forwards;
-}
-
-.animacion-entrada-retraso {
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.2s forwards;
-}
-
-@keyframes fadeUp {
-  0% { opacity: 0; transform: translateY(15px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-</style>
