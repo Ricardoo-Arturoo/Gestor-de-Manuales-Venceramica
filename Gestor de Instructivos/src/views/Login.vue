@@ -66,7 +66,7 @@ const handleGuest = () => {
   errorMessage.value = ''
   successMessage.value = 'Entrando como invitado... redirigiendo.'
   
-  // 🔥 CAMBIO AQUÍ: Limpiamos la misma clave 'usuarioLogueado'
+  // Limpiamos la clave 'usuarioLogueado'
   localStorage.removeItem('usuarioLogueado')
   
   setTimeout(() => {
@@ -102,7 +102,7 @@ const handleGuest = () => {
               id="email" 
               v-model="email"
               placeholder="tu@correo.com"
-              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors"
+              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] transition-colors"
               required
             />
           </div>
@@ -114,40 +114,42 @@ const handleGuest = () => {
               id="password" 
               v-model="password"
               placeholder="••••••••"
-              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors"
+              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] transition-colors"
               required
             />
           </div>
 
+          <!-- Botón de Iniciar Sesión con Pantone 186 y hover en Pantone 187 -->
           <button 
             type="submit"
             :disabled="isLoading"
-            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled:bg-red-400"
+            class="w-full hover:cursor-pointer flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-[#CE1126] hover:bg-[#AB1A2D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#CE1126] transition-colors disabled:bg-red-300"
           >
             {{ isLoading ? 'Verificando...' : 'Iniciar Sesión' }}
           </button>
         </form>
 
-        <div class="mt-8 flex items-center">
-          <div class="flex-grow border-t border-gray-300"></div>
+        <div class="mt-8 flex items-center ">
+          <div class="flex-grow border-t border-gray-300 "></div>
           <span class="flex-shrink-0 px-4 text-sm text-gray-500">O continuar sin cuenta</span>
           <div class="flex-grow border-t border-gray-300"></div>
         </div>
 
+        <!-- Botón de Invitado -->
         <button 
           @click="handleGuest"
           type="button" 
-          class="mt-6 w-full flex justify-center py-3 px-4 border-2 border-gray-200 rounded-lg shadow-sm text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors"
+          class="mt-6 hover:cursor-pointer w-full flex justify-center py-3 px-4 border-2 border-gray-200 rounded-lg shadow-sm text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors"
         >
           Entrar como Invitado
         </button>
       </div>
     </div>
 
-    <!-- LADO DERECHO: Venceramica -->
-    <div class="w-full md:w-[60%] bg-red-600 flex items-center justify-center p-12 min-h-[30vh] md:min-h-screen">
+    <!-- LADO DERECHO: Venceramica con Degradado de los dos Pantone -->
+    <div class="w-full md:w-[60%] bg-gradient-to-br from-[#CE1126] to-[#AB1A2D] flex items-center justify-center p-12 min-h-[30vh] md:min-h-screen">
       <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight text-center drop-shadow-lg">
-        Venceramica
+        Vencerámica
       </h1>
     </div>
 

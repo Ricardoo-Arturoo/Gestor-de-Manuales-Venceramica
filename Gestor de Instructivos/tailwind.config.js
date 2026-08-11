@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {   
+      fontFamily: {
+        // Sobreescribimos la fuente por defecto ('sans') con tu tipografía exacta
+        sans: ['AudiSans-Italic', 'sans-serif'],
+      }
+    },
   },
   plugins: [],
 }
