@@ -116,16 +116,6 @@ const cerrarSesion = () => {
       >
         Fichas
       </router-link>
-
-      <!-- Enlace a Catálogo -->
-      <router-link 
-        to="/catalogo" 
-        @click="isOpen = false"
-        class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-red-50 hover:text-[#AB1A2D] transition-all font-semibold text-lg"
-        active-class="bg-red-50 text-[#CE1126]"
-      >
-        Catálogo
-      </router-link>
       
     </nav>
 

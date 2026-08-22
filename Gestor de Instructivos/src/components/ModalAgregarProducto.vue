@@ -69,7 +69,7 @@ const guardarNuevoProducto = async () => {
       <!-- Cabecera -->
       <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
         <h3 class="text-lg font-bold text-gray-800">Añadir Nuevo Manual</h3>
-        <button @click="emit('cerrar')" class="text-gray-400 hover:text-red-500 transition-colors">
+        <button @click="emit('cerrar')" class="text-gray-400 hover:text-[#CE1126] transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -86,7 +86,7 @@ const guardarNuevoProducto = async () => {
             v-model="nombre" 
             type="text" 
             placeholder="Ej: Producto Nuevo..."
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] outline-none"
             required
           />
         </div>
@@ -110,7 +110,7 @@ const guardarNuevoProducto = async () => {
             type="file" 
             accept="application/pdf"
             @change="manejarSubidaArchivo"
-            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-600 hover:file:bg-red-100 cursor-pointer"
+            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#CE1126]/10 file:text-[#CE1126] hover:file:bg-[#CE1126]/20 cursor-pointer transition-colors"
             required
           />
         </div>
@@ -118,7 +118,7 @@ const guardarNuevoProducto = async () => {
         <!-- Botones -->
         <div class="pt-4 flex justify-end gap-3">
           <button type="button" @click="emit('cerrar')" class="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancelar</button>
-          <button type="submit" :disabled="enviandoFormulario" class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg disabled:bg-red-400">
+          <button type="submit" :disabled="enviandoFormulario" class="px-4 py-2 text-sm font-semibold text-white bg-[#CE1126] hover:bg-[#AB1A2D] rounded-lg disabled:bg-[#CE1126]/50 transition-colors">
             {{ enviandoFormulario ? 'Guardando...' : 'Guardar Producto' }}
           </button>
         </div>
@@ -127,7 +127,6 @@ const guardarNuevoProducto = async () => {
     </div>
   </div>
 </template>
-
 <style scoped>
 .animacion-entrada {
   opacity: 0;

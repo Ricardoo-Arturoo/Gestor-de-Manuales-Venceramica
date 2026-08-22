@@ -1,9 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import Login from '../views/Login.vue'
 import Inicio from '../views/Inicio.vue'
 import Manuales from '../views/Manuales.vue'
 import Inodoros from '../views/Manuales/Inodoros.vue'
 import Herrajes from '../views/Manuales/Herrajes.vue'
+import Griferias from '@/views/Manuales/Griferias.vue'
+import Lavamanos from '@/views/Manuales/Lavamanos.vue'
 
 
 const router = createRouter({
@@ -33,7 +35,17 @@ const router = createRouter({
       path: '/manuales/herrajes',         // Ruta para los herrajes
       name: 'herrajes',
       component: Herrajes
-    }
+    },
+    {
+      path: '/manuales/griferias',         // Ruta para las griferías
+      name: 'griferias',
+      component: Griferias
+    },
+    {
+      path: '/manuales/lavamanos',         // Ruta para los lavamanos
+      name: 'lavamanos',
+      component: Lavamanos
+    },
 
   ],
   scrollBehavior(to, from, savedPosition) {

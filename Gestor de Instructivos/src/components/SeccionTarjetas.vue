@@ -8,26 +8,31 @@ defineProps({
   estaLogueado: { type: Boolean, default: false }
 })
 
-defineEmits(['descargar', 'eliminar', 'editar', 'agregar'])
+// Se eliminó 'editar' de los eventos emitidos
+defineEmits(['descargar', 'eliminar', 'agregar'])
 </script>
 
 <template>
   <div class="mb-12">
     <div class="animacion-entrada-retraso mb-6 flex items-center">
       <h2 class="text-2xl font-bold text-gray-700 pr-4">{{ tituloSeccion }}</h2>
-      <div class="flex-grow h-px bg-red-200"></div>
+      <!-- Línea separadora con Pantone 186 CVP al 20% de opacidad -->
+      <div class="flex-grow h-px bg-[#CE1126]/20"></div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch animacion-entrada-retraso">
+    <!-- Se ajustó el gap para pantallas pequeñas (gap-4 a sm:gap-6) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 items-stretch animacion-entrada-retraso">
       
       <!-- Contenedor individual de la tarjeta -->
+      <!-- Se ajustó el padding responsivo (p-3 a sm:p-4) -->
       <div 
         v-for="item in productos" 
         :key="item.id" 
-        class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 group"
+        class="flex items-center justify-between bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 group"
       >
         <!-- Tarjeta de Producto (ocupa el espacio disponible a la izquierda) -->
-        <div class="flex-1 cursor-pointer" @click="$emit('descargar', item.archivo_pdf)">
+        <!-- Se agregó min-w-0 para evitar desbordamientos de texto largos -->
+        <div class="flex-1 cursor-pointer min-w-0" @click="$emit('descargar', item.archivo_pdf)">
           <TarjetaCategoria 
             :titulo="item.nombre"
             :imagen="item.imagen"
@@ -36,23 +41,17 @@ defineEmits(['descargar', 'eliminar', 'editar', 'agregar'])
         </div>
 
         <!-- Botones de Administrador ALINEADOS AL CENTRO (A la derecha) -->
-        <div v-if="estaLogueado" class="flex items-center gap-2 ml-3 pl-3 border-l border-gray-100">
-          <button 
-            @click.stop="$emit('editar', item)"
-            class="flex items-center justify-center w-9 h-9 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-gray-500 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200"
-            title="Editar PDF"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-            </svg>
-          </button>
+        <!-- flex-shrink-0 asegura que el contenedor no se aplaste, márgenes y paddings responsivos -->
+        <div v-if="estaLogueado" class="flex items-center flex-shrink-0 ml-2 pl-2 sm:ml-4 sm:pl-4 border-l border-gray-100">
           
+          <!-- Botón de eliminar con Pantone 186 CVP en hover y adaptabilidad de tamaño -->
           <button 
             @click.stop="$emit('eliminar', item.id)"
-            class="flex items-center justify-center w-9 h-9 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-gray-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-all duration-200"
+            class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-gray-500 hover:text-[#CE1126] hover:bg-[#CE1126]/10 hover:border-[#CE1126]/30 transition-all duration-200"
             title="Eliminar Manual"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <!-- El icono también se escala según la pantalla (w-4 a sm:w-5) -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
             </svg>
           </button>

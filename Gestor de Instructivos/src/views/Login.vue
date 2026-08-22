@@ -96,25 +96,25 @@ const handleGuest = () => {
         <!-- Formulario -->
         <form @submit.prevent="handleLogin" class="space-y-6">
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+            <label for="email" class="block text-sm font-medium text-gray-900">Correo Electrónico</label>
             <input 
               type="email" 
               id="email" 
               v-model="email"
               placeholder="tu@correo.com"
-              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] transition-colors"
+              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] transition-colors"
               required
             />
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+            <label for="password" class="block text-sm font-medium text-gray-900">Contraseña</label>
             <input 
               type="password" 
               id="password" 
               v-model="password"
               placeholder="••••••••"
-              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] transition-colors"
+              class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] transition-colors"
               required
             />
           </div>

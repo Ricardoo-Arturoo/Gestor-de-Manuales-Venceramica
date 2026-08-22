@@ -4,110 +4,103 @@ import Sidebar from "@/components/Sidebar.vue"
 import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
+import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
 
-// 1. Iniciamos los arreglos vacíos y agregamos un estado de carga
-const inodorosUnaPieza = ref([])
-const inodorosDosPiezas = ref([])
+const inodorosDeDosPiezas = ref([])
+const inodorosDeUnaPieza = ref([])
 const cargando = ref(true)
+const esAdmin = ref(false)
 
-// 2. Función para buscar los inodoros en la base de datos
-const cargarInodoros = async () => {
+// Estado del Modal
+const mostrarModal = ref(false)
+const tipoSeleccionadoParaModal = ref('') // Guardará si es Tanque, Fluxómetro o Repuesto
+
+const cargarHerrajes = async () => {
   try {
-    const respuesta = await fetch('http://localhost:3000/api/inodoros')
-    
+    const respuesta = await fetch('http://localhost:3000/api/productos/Herrajes')
     if (!respuesta.ok) throw new Error('Error al conectar con el servidor')
     
     const datosObtenidos = await respuesta.json()
 
-    // 3. Filtramos los resultados según el tipo
-    inodorosUnaPieza.value = datosObtenidos.filter(inodoro => inodoro.tipo === '1 Pieza')
-    inodorosDosPiezas.value = datosObtenidos.filter(inodoro => inodoro.tipo === '2 Piezas')
+    inodorosDeDosPiezas.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Dos Piezas')
+    inodorosDeUnaPieza.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Una Pieza')
 
   } catch (error) {
-    console.error('Error cargando los inodoros:', error)
-    alert('Hubo un problema cargando los productos.')
+    console.error('Error:', error)
   } finally {
     cargando.value = false
   }
 }
 
-// 4. Ejecutamos la función al cargar la pantalla
 onMounted(() => {
-  cargarInodoros()
+  const usuario = localStorage.getItem('usuarioLogueado')
+  if (usuario) esAdmin.value = true 
+  cargarHerrajes()
 })
 
-// 5. Función de descarga
-const descargarManual = (archivoPdf) => {
-  if (!archivoPdf) {
-    alert("Este producto aún no tiene un manual asignado en la base de datos.")
-    return
-  }
-  
-  console.log(`Descargando manual: ${archivoPdf}`)
+const procesarDescarga = (archivoPdf) => {
+  if (!archivoPdf) return alert("Este producto aún no tiene un manual asignado.")
   window.open(`http://localhost:3000/api/descargar/${archivoPdf}`, '_blank')
+}
+
+const eliminarProducto = async (id) => {
+  if(confirm('¿Estás seguro de que deseas eliminar este producto y su manual?')) {
+    try {
+      await fetch(`http://localhost:3000/api/productos/${id}`, { method: 'DELETE' })
+      inodorosDeDosPiezas.value = inodorosDeDosPiezas.value.filter(item => item.id !== id)
+      inodorosDeUnaPieza.value = inodorosDeUnaPieza.value.filter(item => item.id !== id)
+    } catch (error) {
+      console.error("Error:", error)
+    }
+  }
+}
+
+const editarProducto = (producto) => {
+  console.log("Editar:", producto.nombre)
+}
+
+// Abrir modal y asignar el tipo correcto según la sección
+const abrirFormularioAgregar = (seccion) => {
+  if (seccion === 'Inodoros de Dos Piezas') tipoSeleccionadoParaModal.value = 'Inodoros de Dos Piezas'
+  else if (seccion === 'Inodoros de Una Pieza') tipoSeleccionadoParaModal.value = 'Inodoros de Una Pieza'
+  mostrarModal.value = true
 }
 </script>
 
 <template>
   <div class="flex h-screen w-full bg-gray-50 font-sans overflow-hidden">
-    
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      
-      <!-- Componente Header (Sustituye al botón volver, título y descripción) -->
-      <HeaderVista 
-        titulo="Manuales de Inodoros" 
-        descripcion="Seleccione el modelo de inodoro para ver o descargar su manual de instalación."
-      />
+      <HeaderVista titulo="Manuales de Herrajes" descripcion="Seleccione el modelo de herraje descargar su manual." />
 
-      <!-- MIENTRAS ESTÁ CARGANDO -->
-      <Cargador v-if="cargando" mensaje="Cargando manuales..." />
+      <Cargador v-if="cargando" mensaje="Cargando herrajes..." />
 
-      <!-- CUANDO YA CARGARON LOS DATOS -->
       <div v-else>
-        
-        <!-- SECCIÓN 1: INODOROS DE 1 PIEZA -->
         <SeccionTarjetas 
-          tituloSeccion="Inodoros de 1 Pieza" 
-          :productos="inodorosUnaPieza" 
-          @descargar="descargarManual" 
+          tituloSeccion="Inodoros de Dos Piezas" 
+          :productos="InodorosDeDosPiezas" 
+          :estaLogueado="esAdmin"
+          @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
-        <!-- SECCIÓN 2: INODOROS DE 2 PIEZAS -->
         <SeccionTarjetas 
-          tituloSeccion="Inodoros de 2 Piezas" 
-          :productos="inodorosDosPiezas" 
-          @descargar="descargarManual" 
+          tituloSeccion="Inodoros de Una Pieza" 
+          :productos="InodorosDeUnaPieza" 
+          :estaLogueado="esAdmin"
+          @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
-
       </div>
-
     </main>
+
+    <!-- Usamos nuestro componente Modal reutilizable -->
+    <ModalAgregarProducto 
+      :mostrar="mostrarModal"
+      categoria="Herrajes"
+      :tipo="tipoSeleccionadoParaModal"
+      @cerrar="mostrarModal = false"
+      @guardado="cargarHerrajes"
+    />
+
   </div>
 </template>
-
-<style scoped>
-/* Puedes mantener estas animaciones aquí, o moverlas a tu archivo CSS global (ej: style.css o main.css) 
-   para no tener que pegarlas en cada vista. */
-.animacion-entrada {
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out forwards;
-}
-
-.animacion-entrada-retraso {
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.2s forwards;
-}
-
-@keyframes fadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>

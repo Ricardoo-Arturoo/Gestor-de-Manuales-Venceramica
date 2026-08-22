@@ -1,10 +1,10 @@
 <template>
   <button 
     @click="$emit('click')"
-    class="group w-full hover:cursor-pointer bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-red-200 hover:-translate-y-1 transition-all duration-300 flex items-center space-x-4 text-left focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+    class="group w-full hover:cursor-pointer bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#CE1126]/30 hover:-translate-y-1 transition-all duration-300 flex items-center space-x-4 text-left focus:outline-none focus:ring-2 focus:ring-[#CE1126] focus:ring-offset-2"
   >
     <!-- Ícono de la tarjeta -->
-    <div class="flex-shrink-0 w-14 h-14 bg-red-50 text-red-600 rounded-xl flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+    <div class="flex-shrink-0 w-14 h-14 bg-[#CE1126]/10 text-[#CE1126] rounded-xl flex items-center justify-center group-hover:bg-[#AB1A2D] group-hover:text-white transition-colors duration-300">
       <!-- Usamos un slot por si en otra página quieres pasar un SVG diferente -->
       <slot name="icono">
         <!-- Ícono por defecto (Libro/Manual) -->
@@ -16,7 +16,7 @@
 
     <!-- Texto de la tarjeta -->
     <div>
-      <h3 class="text-xl font-bold text-gray-800 group-hover:text-red-600 transition-colors">
+      <h3 class="text-xl font-bold text-gray-800 group-hover:text-[#AB1A2D] transition-colors">
         {{ titulo }}
       </h3>
       <p class="text-sm text-gray-400 mt-1">{{ subtitulo }}</p>
