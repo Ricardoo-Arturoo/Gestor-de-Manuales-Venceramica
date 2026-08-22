@@ -42,7 +42,7 @@ const guardarNuevoProducto = async () => {
   datos.append('pdf', archivoPdf.value)
 
   try {
-    const respuesta = await fetch('http://localhost:3000/api/productos', {
+    const respuesta = await fetch('https://api.manuales.venceramica.com', {
       method: 'POST',
       body: datos
     })

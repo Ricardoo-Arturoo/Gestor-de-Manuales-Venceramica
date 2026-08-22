@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -13,10 +14,14 @@ app.use(express.json());
 
 // Conexión a MySQL
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'venceramica_db'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
+
+app.get('/', (req, res) => {
+  res.send('API Backend de Manuales Venceramica en funcionamiento ');
 });
 
 db.connect((err) => {
@@ -51,7 +56,8 @@ const upload = multer({ storage: storage });
 // ==========================================
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
-  const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+  // CAMBIO EN LA CONSULTA: users por usuarios
+  const query = 'SELECT * FROM usuarios WHERE email = ? AND password = ?';
   
   db.query(query, [email, password], (err, results) => {
     if (err) return res.status(500).json({ message: 'Error en el servidor' });
@@ -88,7 +94,8 @@ app.get('/api/descargar/:nombreArchivo', (req, res) => {
 // ==========================================
 app.get('/api/productos/:categoria', (req, res) => {
   const categoria = req.params.categoria;
-  const sql = 'SELECT * FROM productos WHERE categoria = ?';
+  // CAMBIO EN LA CONSULTA: productos por manuales
+  const sql = 'SELECT * FROM manuales WHERE categoria = ?';
   
   db.query(sql, [categoria], (err, resultados) => {
     if (err) return res.status(500).json({ error: "Error en la base de datos" });
@@ -116,7 +123,8 @@ app.post('/api/productos', upload.single('pdf'), (req, res) => {
     return res.status(400).json({ message: "Es obligatorio subir un archivo PDF" });
   }
 
-  const queryInsertar = 'INSERT INTO productos (nombre, tipo, categoria, archivo_pdf, imagen) VALUES (?, ?, ?, ?, ?)';
+  // CAMBIO EN LA CONSULTA: productos por manuales
+  const queryInsertar = 'INSERT INTO manuales (nombre, tipo, categoria, archivo_pdf, imagen) VALUES (?, ?, ?, ?, ?)';
   
   db.query(queryInsertar, [nombre, tipo, categoria, archivoPdf, imagen], (err, resultado) => {
     if (err) {
@@ -137,7 +145,8 @@ app.post('/api/productos', upload.single('pdf'), (req, res) => {
 app.delete('/api/productos/:id', (req, res) => {
   const { id } = req.params;
 
-  const queryBuscar = 'SELECT archivo_pdf FROM productos WHERE id = ?';
+  // CAMBIO EN LA CONSULTA: productos por manuales
+  const queryBuscar = 'SELECT archivo_pdf FROM manuales WHERE id = ?';
   
   db.query(queryBuscar, [id], (err, resultados) => {
     if (err) return res.status(500).json({ message: "Error en la base de datos" });
@@ -156,7 +165,8 @@ app.delete('/api/productos/:id', (req, res) => {
       }
     }
 
-    const queryEliminar = 'DELETE FROM productos WHERE id = ?';
+    // CAMBIO EN LA CONSULTA: productos por manuales
+    const queryEliminar = 'DELETE FROM manuales WHERE id = ?';
     db.query(queryEliminar, [id], (err, resultado) => {
       if (err) return res.status(500).json({ message: "Error al eliminar de la BD" });
       res.status(200).json({ message: "Producto y manual eliminados" });
