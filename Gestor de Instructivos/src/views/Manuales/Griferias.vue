@@ -23,7 +23,7 @@ const tipoSeleccionadoParaModal = ref('')
 
 const cargarGriferias = async () => {
   try {
-    const respuesta = await fetch('http://localhost:3000/api/productos/Griferias')
+    const respuesta = await fetch('https://api.manuales.venceramica.com/api/productos/Griferias')
     if (!respuesta.ok) throw new Error('Error al conectar con el servidor')
     
     const datosObtenidos = await respuesta.json()
@@ -51,13 +51,13 @@ onMounted(() => {
 
 const procesarDescarga = (archivoPdf) => {
   if (!archivoPdf) return alert("Este producto aún no tiene un manual asignado.")
-  window.open(`http://localhost:3000/api/descargar/${archivoPdf}`, '_blank')
+  window.open(`https://api.manuales.venceramica.com/api/descargar/${archivoPdf}`, '_blank')
 }
 
 const eliminarProducto = async (id) => {
   if(confirm('¿Estás seguro de que deseas eliminar este producto y su manual?')) {
     try {
-      await fetch(`http://localhost:3000/api/productos/${id}`, { method: 'DELETE' })
+      await fetch(`https://api.manuales.venceramica.com/api/productos/${id}`, { method: 'DELETE' })
       
       bidet.value = bidet.value.filter(item => item.id !== id)
       ducha.value = ducha.value.filter(item => item.id !== id)

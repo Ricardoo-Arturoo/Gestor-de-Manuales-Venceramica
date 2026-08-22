@@ -42,7 +42,8 @@ const guardarNuevoProducto = async () => {
   datos.append('pdf', archivoPdf.value)
 
   try {
-    const respuesta = await fetch('https://api.manuales.venceramica.com', {
+    // 👇 CAMBIO AQUÍ: URL apuntando al entorno de producción en cPanel
+    const respuesta = await fetch('https://api.manuales.venceramica.com/api/productos', {
       method: 'POST',
       body: datos
     })
