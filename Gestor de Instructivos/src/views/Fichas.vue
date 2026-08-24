@@ -58,16 +58,24 @@ const categorias = ref([
 const seleccionarCategoria = (nombre) => {
   console.log(`Abriendo categoría: ${nombre}`)
   if (nombre === 'Inodoros') {
-    router.push('/manuales/inodoros')
+    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
+    alert(`La vista para la categoría "${nombre}" está en construcción.`)
+    //router.push('/fichas/inodoros')
   }
   else if (nombre === 'Herrajes') {
-    router.push('/manuales/herrajes')
+    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
+    alert(`La vista para la categoría "${nombre}" está en construcción.`)
+    //router.push('/fichas/herrajes')
   }
   else if (nombre === 'Griferias') {
-    router.push('/manuales/griferias')
+    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
+    alert(`La vista para la categoría "${nombre}" está en construcción.`)
+    //router.push('/fichas/griferias')
   }
   else if (nombre === 'Lavamanos') {
-    router.push('/manuales/lavamanos')
+    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
+    alert(`La vista para la categoría "${nombre}" está en construcción.`)
+    //router.push('/fichas/lavamanos')
   }
   else {
     const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
@@ -78,7 +86,7 @@ const seleccionarCategoria = (nombre) => {
 // Lógica para manejar el clic en una subcategoría específica (deslizamiento)
 const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
   if (nombreCategoria === 'Griferias') {
-    router.push({ path: '/manuales/griferias', hash: `#${idSubcategoria}` })
+    router.push({ path: '/fichas/griferias', hash: `#${idSubcategoria}` })
   }
 }
 </script>
@@ -91,7 +99,7 @@ const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
       <!-- Encabezado de la página -->
       <div class="mb-10 animacion-entrada">
         <h1 class="text-3xl md:text-4xl lg:text-5xl font-black text-gray-800 tracking-tight">
-          Manuales de Instalación
+          Fichas Técnicas
         </h1>
         <p class="text-gray-500 mt-3 text-lg md:text-xl">
           Seleccione una categoría para ver y descargar los documentos disponibles.
@@ -107,7 +115,7 @@ const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
           :titulo="categoria.nombre"
           :imagen="categoria.imagen" 
           :subcategorias="categoria.subcategorias"
-          subtitulo="Ver manuales" 
+          subtitulo="Ver fichas" 
           @click="seleccionarCategoria(categoria.nombre)"
           @click-subcategoria="(idSub) => seleccionarSubcategoria(categoria.nombre, idSub)"
         />

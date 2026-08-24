@@ -15,9 +15,9 @@ const esAdmin = ref(false)
 const mostrarModal = ref(false)
 const tipoSeleccionadoParaModal = ref('') // Guardará si es Tanque, Fluxómetro o Repuesto
 
-const cargarHerrajes = async () => {
+const cargarInodoros = async () => {
   try {
-    const respuesta = await fetch('https://api.manuales.venceramica.com/api/productos/Herrajes')
+    const respuesta = await fetch('https://api.manuales.venceramica.com/api/productos/Inodoros')
     if (!respuesta.ok) throw new Error('Error al conectar con el servidor')
     
     const datosObtenidos = await respuesta.json()
@@ -35,7 +35,7 @@ const cargarHerrajes = async () => {
 onMounted(() => {
   const usuario = localStorage.getItem('usuarioLogueado')
   if (usuario) esAdmin.value = true 
-  cargarHerrajes()
+  cargarInodoros()
 })
 
 const procesarDescarga = (archivoPdf) => {
@@ -72,9 +72,9 @@ const abrirFormularioAgregar = (seccion) => {
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Manuales de Herrajes" descripcion="Seleccione el modelo de herraje descargar su manual." />
+      <HeaderVista titulo="Manuales de Inodoros" descripcion="Seleccione el modelo de inodoro para descargar su manual." />
 
-      <Cargador v-if="cargando" mensaje="Cargando herrajes..." />
+      <Cargador v-if="cargando" mensaje="Cargando Inodoros..." />
 
       <div v-else>
         <SeccionTarjetas 
@@ -96,10 +96,10 @@ const abrirFormularioAgregar = (seccion) => {
     <!-- Usamos nuestro componente Modal reutilizable -->
     <ModalAgregarProducto 
       :mostrar="mostrarModal"
-      categoria="Herrajes"
+      categoria="Inodoros"
       :tipo="tipoSeleccionadoParaModal"
       @cerrar="mostrarModal = false"
-      @guardado="cargarHerrajes"
+      @guardado="cargarInodoros"
     />
 
   </div>

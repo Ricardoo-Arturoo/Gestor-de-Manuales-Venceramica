@@ -76,7 +76,7 @@ const abrirFormularioAgregar = (seccion) => {
     
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Manuales de Lavamanos" descripcion="Seleccione el modelo de herraje descargar su manual." />
+      <HeaderVista titulo="Manuales de Lavamanos" descripcion="Seleccione el modelo de lavamanos para descargar su manual." />
 
       <Cargador v-if="cargando" mensaje="Cargando Lavamanos..." />
 
@@ -89,7 +89,7 @@ const abrirFormularioAgregar = (seccion) => {
         />
 
         <SeccionTarjetas 
-          tituloSeccion="Lavamanos para Sobre Poner" 
+          tituloSeccion="Lavamanos para Sobreponer" 
           :productos="paraLavamanosParaSobrePoner" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"

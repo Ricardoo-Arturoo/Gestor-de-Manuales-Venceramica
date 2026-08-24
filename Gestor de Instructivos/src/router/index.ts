@@ -6,6 +6,7 @@ import Inodoros from '../views/Manuales/Inodoros.vue'
 import Herrajes from '../views/Manuales/Herrajes.vue'
 import Griferias from '@/views/Manuales/Griferias.vue'
 import Lavamanos from '@/views/Manuales/Lavamanos.vue'
+import Fichas from '@/views/Fichas.vue'
 
 
 const router = createRouter({
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/manuales',         // Ruta para los manuales
       name: 'manuales',
       component: Manuales
+    },
+    {
+      path: '/fichas',         // Ruta para las Fichas Técnicas
+      name: 'fichas',
+      component: Fichas
     },
     {
       path: '/manuales/inodoros',         // Ruta para los inodoros
