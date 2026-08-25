@@ -79,14 +79,14 @@ const abrirFormularioAgregar = (seccion) => {
       <div v-else>
         <SeccionTarjetas 
           tituloSeccion="Inodoros de Dos Piezas" 
-          :productos="InodorosDeDosPiezas" 
+          :productos="inodorosDeDosPiezas" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
         <SeccionTarjetas 
           tituloSeccion="Inodoros de Una Pieza" 
-          :productos="InodorosDeUnaPieza" 
+          :productos="inodorosDeUnaPieza" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
