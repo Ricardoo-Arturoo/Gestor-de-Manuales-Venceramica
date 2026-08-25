@@ -106,7 +106,7 @@ const guardarNuevoProducto = async () => {
 
         <!-- PDF -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Archivo PDF (Manual)</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Archivo PDF</label>
           <input 
             type="file" 
             accept="application/pdf"

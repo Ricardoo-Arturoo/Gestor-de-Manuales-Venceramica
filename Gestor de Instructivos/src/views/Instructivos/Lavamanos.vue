@@ -6,8 +6,9 @@ import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
 
-const InodorosDeDosPiezas = ref([])
-const InodorosDeUnaPieza = ref([])
+const LavamanosConPedestal = ref([])
+const LavamanosParaSobreponer = ref([])
+const LavamanosParaEmpotrar = ref([])
 const cargando = ref(true)
 const esAdmin = ref(false)
 
@@ -23,7 +24,7 @@ const cargarLavamanos = async () => {
     const datosObtenidos = await respuesta.json()
 
     LavamanosConPedestal.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos con Pedestal')
-    LavamanosParaSobrePoner.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos para Sobre Poner')
+    LavamanosParaSobreponer.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos para Sobreponer')
     LavamanosParaEmpotrar.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos para Empotrar')
 
   } catch (error) {
@@ -49,7 +50,7 @@ const eliminarProducto = async (id) => {
     try {
       await fetch(`https://api.instructivos.venceramica.com/api/productos/${id}`, { method: 'DELETE' })
       LavamanosConPedestal.value = LavamanosConPedestal.value.filter(item => item.id !== id)
-      LavamanosParaSobrePoner.value = LavamanosParaSobrePoner.value.filter(item => item.id !== id)
+      LavamanosParaSobreponer.value = LavamanosParaSobreponer.value.filter(item => item.id !== id)
       LavamanosParaEmpotrar.value = LavamanosParaEmpotrar.value.filter(item => item.id !== id)
     } catch (error) {
       console.error("Error:", error)
@@ -57,15 +58,12 @@ const eliminarProducto = async (id) => {
   }
 }
 
-const editarProducto = (producto) => {
-  console.log("Editar:", producto.nombre)
-}
 
 // Abrir modal y asignar el tipo correcto según la sección
 const abrirFormularioAgregar = (seccion) => {
   if (seccion === 'Lavamanos con Pedestal') tipoSeleccionadoParaModal.value = 'Lavamanos con Pedestal'
-  else if (seccion === 'Lavamanos para Sobre Poner') tipoSeleccionadoParaModal.value = 'Lavamanos para Sobre Poner'
   else if (seccion === 'Lavamanos para Empotrar') tipoSeleccionadoParaModal.value = 'Lavamanos para Empotrar'
+  else if (seccion === 'Lavamanos para Sobreponer') tipoSeleccionadoParaModal.value = 'Lavamanos para Sobreponer'
   mostrarModal.value = true
 }
 </script>
@@ -83,21 +81,21 @@ const abrirFormularioAgregar = (seccion) => {
       <div v-else>
         <SeccionTarjetas 
           tituloSeccion="Lavamanos con Pedestal" 
-          :productos="paraLavamanosConPedestal" 
+          :productos="LavamanosConPedestal" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
         <SeccionTarjetas 
           tituloSeccion="Lavamanos para Sobreponer" 
-          :productos="paraLavamanosParaSobrePoner" 
+          :productos="LavamanosParaSobreponer" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
 
         <SeccionTarjetas 
           tituloSeccion="Lavamanos para Empotrar" 
-          :productos="paraLavamanosParaEmpotrar" 
+          :productos="LavamanosParaEmpotrar" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
