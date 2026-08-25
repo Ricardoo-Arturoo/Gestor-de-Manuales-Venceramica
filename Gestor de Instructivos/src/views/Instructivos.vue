@@ -69,6 +69,21 @@ const seleccionarCategoria = (nombre) => {
   else if (nombre === 'Lavamanos') {
     router.push('/instructivos/lavamanos')
   }
+  else if (nombre === 'Bidet') {
+    router.push('/instructivos/bidet')
+  }
+  else if (nombre === 'Urinarios') {
+    router.push('/instructivos/urinarios')
+  }
+  else if (nombre === 'Asientos') {
+    router.push('/instructivos/asientos')
+  }
+  else if (nombre === 'Accesorios') {
+    router.push('/instructivos/accesorios')
+  }
+  else if (nombre === 'Repuestos') {
+    router.push('/instructivos/repuestos')
+  }
   else {
     const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
     alert(`La vista para la categoría "${nombre}" está en construcción.`)

@@ -7,6 +7,11 @@ import Herrajes from '../views/Instructivos/Herrajes.vue'
 import Griferias from '@/views/Instructivos/Griferias.vue'
 import Lavamanos from '@/views/Instructivos/Lavamanos.vue'
 import Fichas from '@/views/Fichas.vue'
+import Bidet from '@/views/Instructivos/Bidet.vue'
+import Urinarios from '@/views/Instructivos/Urinarios.vue'
+import Asientos from '@/views/Instructivos/Asientos.vue'
+import Accesorios from '@/views/Instructivos/Accesorios.vue'
+import Repuestos from '@/views/Instructivos/Repuestos.vue'
 
 
 const router = createRouter({
@@ -52,6 +57,31 @@ const router = createRouter({
       name: 'lavamanos',
       component: Lavamanos
     },
+    {
+      path: '/instructivos/bidet',         // Ruta para los bidets
+      name: 'bidet',
+      component: Bidet
+    },
+    {
+      path: '/instructivos/urinarios',         // Ruta para los urinarios
+      name: 'urinarios',
+      component: Urinarios
+    },
+    {
+      path: '/instructivos/asientos',         // Ruta para los asientos
+      name: 'asientos',
+      component: Asientos
+    },
+    {
+      path: '/instructivos/accesorios',         // Ruta para los accesorios
+      name: 'accesorios',
+      component: Accesorios
+    },
+    {
+      path: '/instructivos/repuestos',         // Ruta para los repuestos
+      name: 'repuestos',
+      component: Repuestos
+    }
 
   ],
   scrollBehavior(to, from, savedPosition) {
