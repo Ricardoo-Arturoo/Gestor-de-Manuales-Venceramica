@@ -6,8 +6,8 @@ import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
 
-const inodorosDeDosPiezas = ref([])
-const inodorosDeUnaPieza = ref([])
+const InodorosDeDosPiezas = ref([])
+const InodorosDeUnaPieza = ref([])
 const cargando = ref(true)
 const esAdmin = ref(false)
 
@@ -15,15 +15,15 @@ const esAdmin = ref(false)
 const mostrarModal = ref(false)
 const tipoSeleccionadoParaModal = ref('') // Guardará si es Tanque, Fluxómetro o Repuesto
 
-const cargarInodoros = async () => {
+const cargarHerrajes = async () => {
   try {
-    const respuesta = await fetch('https://api.manuales.venceramica.com/api/productos/Inodoros')
+    const respuesta = await fetch('https://api.instructivos.venceramica.com/api/productos/Herrajes')
     if (!respuesta.ok) throw new Error('Error al conectar con el servidor')
     
     const datosObtenidos = await respuesta.json()
 
-    inodorosDeDosPiezas.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Dos Piezas')
-    inodorosDeUnaPieza.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Una Pieza')
+    InodorosDeDosPiezas.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Dos Piezas')
+    InodorosDeUnaPieza.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Una Pieza')
 
   } catch (error) {
     console.error('Error:', error)
@@ -35,20 +35,20 @@ const cargarInodoros = async () => {
 onMounted(() => {
   const usuario = localStorage.getItem('usuarioLogueado')
   if (usuario) esAdmin.value = true 
-  cargarInodoros()
+  cargarHerrajes()
 })
 
 const procesarDescarga = (archivoPdf) => {
-  if (!archivoPdf) return alert("Este producto aún no tiene un manual asignado.")
-  window.open(`https://api.manuales.venceramica.com/api/descargar/${archivoPdf}`, '_blank')
+  if (!archivoPdf) return alert("Este producto aún no tiene un instructivo asignado.")
+  window.open(`https://api.instructivos.venceramica.com/api/descargar/${archivoPdf}`, '_blank')
 }
 
 const eliminarProducto = async (id) => {
-  if(confirm('¿Estás seguro de que deseas eliminar este producto y su manual?')) {
+  if(confirm('¿Estás seguro de que deseas eliminar este producto y su instructivo?')) {
     try {
-      await fetch(`https://api.manuales.venceramica.com/api/productos/${id}`, { method: 'DELETE' })
-      inodorosDeDosPiezas.value = inodorosDeDosPiezas.value.filter(item => item.id !== id)
-      inodorosDeUnaPieza.value = inodorosDeUnaPieza.value.filter(item => item.id !== id)
+      await fetch(`https://api.instructivos.venceramica.com/api/productos/${id}`, { method: 'DELETE' })
+      InodorosDeDosPiezas.value = InodorosDeDosPiezas.value.filter(item => item.id !== id)
+      InodorosDeUnaPieza.value = InodorosDeUnaPieza.value.filter(item => item.id !== id)
     } catch (error) {
       console.error("Error:", error)
     }
@@ -61,8 +61,8 @@ const editarProducto = (producto) => {
 
 // Abrir modal y asignar el tipo correcto según la sección
 const abrirFormularioAgregar = (seccion) => {
-  if (seccion === 'Inodoros de Dos Piezas') tipoSeleccionadoParaModal.value = 'Inodoros de Dos Piezas'
-  else if (seccion === 'Inodoros de Una Pieza') tipoSeleccionadoParaModal.value = 'Inodoros de Una Pieza'
+  if (seccion === 'Herrajes para Inodoros de Dos Piezas') tipoSeleccionadoParaModal.value = 'Inodoros de Dos Piezas'
+  else if (seccion === 'Herrajes para Inodoros de Una Pieza') tipoSeleccionadoParaModal.value = 'Inodoros de Una Pieza'
   mostrarModal.value = true
 }
 </script>
@@ -70,23 +70,24 @@ const abrirFormularioAgregar = (seccion) => {
 <template>
   <div class="flex h-screen w-full bg-gray-50 font-sans overflow-hidden">
     <Sidebar />
+    
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Manuales de Inodoros" descripcion="Seleccione el modelo de inodoro para descargar su manual." />
+      <HeaderVista titulo="Instructivos de Herrajes" descripcion="Seleccione el modelo de herraje descargar su instructivo." />
 
-      <Cargador v-if="cargando" mensaje="Cargando Inodoros..." />
+      <Cargador v-if="cargando" mensaje="Cargando herrajes..." />
 
       <div v-else>
         <SeccionTarjetas 
-          tituloSeccion="Inodoros de Dos Piezas" 
-          :productos="InodorosDeDosPiezas" 
+          tituloSeccion="Herrajes para Inodoros de Dos Piezas" 
+          :productos="paraInodorosDeDosPiezas" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
         <SeccionTarjetas 
-          tituloSeccion="Inodoros de Una Pieza" 
-          :productos="InodorosDeUnaPieza" 
+          tituloSeccion="Herrajes para Inodoros de Una Pieza" 
+          :productos="paraInodorosDeUnaPieza" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
@@ -96,10 +97,10 @@ const abrirFormularioAgregar = (seccion) => {
     <!-- Usamos nuestro componente Modal reutilizable -->
     <ModalAgregarProducto 
       :mostrar="mostrarModal"
-      categoria="Inodoros"
+      categoria="Herrajes"
       :tipo="tipoSeleccionadoParaModal"
       @cerrar="mostrarModal = false"
-      @guardado="cargarInodoros"
+      @guardado="cargarHerrajes"
     />
 
   </div>

@@ -58,16 +58,16 @@ const categorias = ref([
 const seleccionarCategoria = (nombre) => {
   console.log(`Abriendo categoría: ${nombre}`)
   if (nombre === 'Inodoros') {
-    router.push('/manuales/inodoros')
+    router.push('/instructivos/inodoros')
   }
   else if (nombre === 'Herrajes') {
-    router.push('/manuales/herrajes')
+    router.push('/instructivos/herrajes')
   }
   else if (nombre === 'Griferias') {
-    router.push('/manuales/griferias')
+    router.push('/instructivos/griferias')
   }
   else if (nombre === 'Lavamanos') {
-    router.push('/manuales/lavamanos')
+    router.push('/instructivos/lavamanos')
   }
   else {
     const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
@@ -78,7 +78,7 @@ const seleccionarCategoria = (nombre) => {
 // Lógica para manejar el clic en una subcategoría específica (deslizamiento)
 const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
   if (nombreCategoria === 'Griferias') {
-    router.push({ path: '/manuales/griferias', hash: `#${idSubcategoria}` })
+    router.push({ path: '/instructivos/griferias', hash: `#${idSubcategoria}` })
   }
 }
 </script>
@@ -91,7 +91,7 @@ const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
       <!-- Encabezado de la página -->
       <div class="mb-10 animacion-entrada">
         <h1 class="text-3xl md:text-4xl lg:text-5xl font-black text-gray-800 tracking-tight">
-          Manuales de Instalación
+          Instructivos de Instalación
         </h1>
         <p class="text-gray-500 mt-3 text-lg md:text-xl">
           Seleccione una categoría para ver y descargar los documentos disponibles.
@@ -107,7 +107,7 @@ const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
           :titulo="categoria.nombre"
           :imagen="categoria.imagen" 
           :subcategorias="categoria.subcategorias"
-          subtitulo="Ver manuales" 
+          subtitulo="Ver instructivos" 
           @click="seleccionarCategoria(categoria.nombre)"
           @click-subcategoria="(idSub) => seleccionarSubcategoria(categoria.nombre, idSub)"
         />

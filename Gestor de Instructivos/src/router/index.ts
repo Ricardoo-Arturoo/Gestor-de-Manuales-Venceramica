@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import Login from '../views/Login.vue'
 import Inicio from '../views/Inicio.vue'
-import Manuales from '../views/Manuales.vue'
-import Inodoros from '../views/Manuales/Inodoros.vue'
-import Herrajes from '../views/Manuales/Herrajes.vue'
-import Griferias from '@/views/Manuales/Griferias.vue'
-import Lavamanos from '@/views/Manuales/Lavamanos.vue'
+import Instructivos from '../views/Instructivos.vue'
+import Inodoros from '../views/Instructivos/Inodoros.vue'
+import Herrajes from '../views/Instructivos/Herrajes.vue'
+import Griferias from '@/views/Instructivos/Griferias.vue'
+import Lavamanos from '@/views/Instructivos/Lavamanos.vue'
 import Fichas from '@/views/Fichas.vue'
 
 
@@ -23,9 +23,9 @@ const router = createRouter({
       component: Inicio
     },
     {
-      path: '/manuales',         // Ruta para los manuales
-      name: 'manuales',
-      component: Manuales
+      path: '/instructivos',         // Ruta para los instructivos
+      name: 'instructivos',
+      component: Instructivos
     },
     {
       path: '/fichas',         // Ruta para las Fichas Técnicas
@@ -33,22 +33,22 @@ const router = createRouter({
       component: Fichas
     },
     {
-      path: '/manuales/inodoros',         // Ruta para los inodoros
+      path: '/instructivos/inodoros',         // Ruta para los inodoros
       name: 'inodoros',
       component: Inodoros
     },
     {
-      path: '/manuales/herrajes',         // Ruta para los herrajes
+      path: '/instructivos/herrajes',         // Ruta para los herrajes
       name: 'herrajes',
       component: Herrajes
     },
     {
-      path: '/manuales/griferias',         // Ruta para las griferías
+      path: '/instructivos/griferias',         // Ruta para las griferías
       name: 'griferias',
       component: Griferias
     },
     {
-      path: '/manuales/lavamanos',         // Ruta para los lavamanos
+      path: '/instructivos/lavamanos',         // Ruta para los lavamanos
       name: 'lavamanos',
       component: Lavamanos
     },

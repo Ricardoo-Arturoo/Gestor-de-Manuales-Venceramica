@@ -23,7 +23,7 @@ const tipoSeleccionadoParaModal = ref('')
 
 const cargarGriferias = async () => {
   try {
-    const respuesta = await fetch('https://api.manuales.venceramica.com/api/productos/Griferias')
+    const respuesta = await fetch('https://api.instructivos.venceramica.com/api/productos/Griferias')
     if (!respuesta.ok) throw new Error('Error al conectar con el servidor')
     
     const datosObtenidos = await respuesta.json()
@@ -50,14 +50,14 @@ onMounted(() => {
 })
 
 const procesarDescarga = (archivoPdf) => {
-  if (!archivoPdf) return alert("Este producto aún no tiene un manual asignado.")
-  window.open(`https://api.manuales.venceramica.com/api/descargar/${archivoPdf}`, '_blank')
+  if (!archivoPdf) return alert("Este producto aún no tiene un instructivo asignado.")
+  window.open(`https://api.instructivos.venceramica.com/api/descargar/${archivoPdf}`, '_blank')
 }
 
 const eliminarProducto = async (id) => {
-  if(confirm('¿Estás seguro de que deseas eliminar este producto y su manual?')) {
+  if(confirm('¿Estás seguro de que deseas eliminar este producto y su instructivo?')) {
     try {
-      await fetch(`https://api.manuales.venceramica.com/api/productos/${id}`, { method: 'DELETE' })
+      await fetch(`https://api.instructivos.venceramica.com/api/productos/${id}`, { method: 'DELETE' })
       
       bidet.value = bidet.value.filter(item => item.id !== id)
       ducha.value = ducha.value.filter(item => item.id !== id)
@@ -92,7 +92,7 @@ const abrirFormularioAgregar = (seccion) => {
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Griferías" descripcion="Seleccione el modelo de grifería para ver o descargar su manual." />
+      <HeaderVista titulo="Griferías" descripcion="Seleccione el modelo de grifería para ver o descargar su instructivo." />
 
       <Cargador v-if="cargando" mensaje="Cargando griferías..." />
 

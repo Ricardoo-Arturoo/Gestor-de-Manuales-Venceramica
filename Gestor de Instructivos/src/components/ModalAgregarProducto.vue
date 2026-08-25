@@ -43,7 +43,7 @@ const guardarNuevoProducto = async () => {
 
   try {
     // 👇 CAMBIO AQUÍ: URL apuntando al entorno de producción en cPanel
-    const respuesta = await fetch('https://api.manuales.venceramica.com/api/productos', {
+    const respuesta = await fetch('https://api.instructivos.venceramica.com/api/productos', {
       method: 'POST',
       body: datos
     })
@@ -69,7 +69,7 @@ const guardarNuevoProducto = async () => {
       
       <!-- Cabecera -->
       <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-        <h3 class="text-lg font-bold text-gray-800">Añadir Nuevo Manual</h3>
+        <h3 class="text-lg font-bold text-gray-800">Añadir Nuevo Instructivo</h3>
         <button @click="emit('cerrar')" class="text-gray-400 hover:text-[#CE1126] transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

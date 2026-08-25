@@ -48,7 +48,7 @@ defineEmits(['descargar', 'eliminar', 'agregar'])
           <button 
             @click.stop="$emit('eliminar', item.id)"
             class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-gray-500 hover:text-[#CE1126] hover:bg-[#CE1126]/10 hover:border-[#CE1126]/30 transition-all duration-200"
-            title="Eliminar Manual"
+            title="Eliminar Instructivo"
           >
             <!-- El icono también se escala según la pantalla (w-4 a sm:w-5) -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5">

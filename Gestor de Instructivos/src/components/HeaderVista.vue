@@ -6,7 +6,7 @@ const router = useRouter()
 defineProps({
   titulo: { type: String, required: true },
   descripcion: { type: String, required: true },
-  rutaVolver: { type: String, default: '/manuales' }
+  rutaVolver: { type: String, default: '/instructivos' }
 })
 
 const volver = (ruta) => {
