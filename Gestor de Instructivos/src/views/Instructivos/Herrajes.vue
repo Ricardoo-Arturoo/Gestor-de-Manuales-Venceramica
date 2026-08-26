@@ -22,8 +22,8 @@ const cargarHerrajes = async () => {
     
     const datosObtenidos = await respuesta.json()
 
-    HerrajesParaInodorosDeDosPiezas.value = datosObtenidos.filter(h => h.tipo === 'Herrajes para Inodoros de Dos Piezas')
-    HerrajesParaInodorosDeUnaPieza.value = datosObtenidos.filter(h => h.tipo === 'Herrajes para Inodoros de Una Pieza')
+    HerrajesParaInodorosDeDosPiezas.value = datosObtenidos.filter(h => h.tipo === 'Herrajes para Inodoros de Dos Piezas'&& h.clasificacion === 'Instructivo')
+    HerrajesParaInodorosDeUnaPieza.value = datosObtenidos.filter(h => h.tipo === 'Herrajes para Inodoros de Una Pieza'&& h.clasificacion === 'Instructivo')
 
   } catch (error) {
     console.error('Error:', error)

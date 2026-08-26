@@ -21,7 +21,7 @@ const cargarAsientos = async () => {
     
     const datosObtenidos = await respuesta.json()
 
-    asientos.value = datosObtenidos
+    asientos.value = datosObtenidos.filter(h => h.clasificacion === 'Instructivo')
 
   } catch (error) {
     console.error('Error:', error)

@@ -44,6 +44,8 @@ const cerrarSesion = () => {
   // 2. Redirigimos de vuelta a la pantalla de Login
   router.push('/')
 }
+
+const anioActual = new Date().getFullYear()
 </script>
 
 <template>
@@ -175,7 +177,14 @@ const cerrarSesion = () => {
         </svg>
         <span class="truncate">Cerrar Sesión</span>
       </button>
-      
+
+      <!-- ─── COPYRIGHT ─── -->
+      <div class="pt-2 text-center">
+        <p class="text-[11px] text-gray-400 font-medium">
+          © {{ anioActual }} Vencerámica. Todos los derechos reservados. Hecho por Ricado Barrios.
+        </p>
+      </div>
+
     </div>
   </aside>
 </template>

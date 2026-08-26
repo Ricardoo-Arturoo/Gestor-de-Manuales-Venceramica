@@ -5,21 +5,25 @@ import { ref, watch } from 'vue'
 const props = defineProps({
   mostrar: { type: Boolean, required: true },
   categoria: { type: String, required: true },
-  tipo: { type: String, required: true }
+  tipo: { type: String, required: true },
+  // Permite definir si nace como Ficha o Instructivo (Por defecto: Instructivo)
+  clasificacionInicial: { type: String, default: 'Instructivo' }
 })
 
 // Eventos que enviaremos de vuelta a la vista padre
 const emit = defineEmits(['cerrar', 'guardado'])
 
 const nombre = ref('')
+const clasificacion = ref(props.clasificacionInicial) 
 const archivoPdf = ref(null)
 const enviandoFormulario = ref(false)
 
-// Cada vez que se abre el modal, reseteamos los campos
+// Cada vez que se abre el modal, reseteamos los campos y sincronizamos la clasificación inicial
 watch(() => props.mostrar, (nuevoValor) => {
   if (nuevoValor) {
     nombre.value = ''
     archivoPdf.value = null
+    clasificacion.value = props.clasificacionInicial 
   }
 })
 
@@ -28,7 +32,7 @@ const manejarSubidaArchivo = (event) => {
 }
 
 const guardarNuevoProducto = async () => {
-  if (!nombre.value || !archivoPdf.value) {
+  if (!nombre.value || !archivoPdf.value || !clasificacion.value) {
     alert("Por favor, completa todos los campos y selecciona un PDF.")
     return
   }
@@ -37,12 +41,12 @@ const guardarNuevoProducto = async () => {
 
   const datos = new FormData()
   datos.append('nombre', nombre.value)
-  datos.append('tipo', props.tipo)           // Usamos el tipo dinámico
-  datos.append('categoria', props.categoria) // Usamos la categoría dinámica
+  datos.append('tipo', props.tipo)               // Usamos el tipo dinámico
+  datos.append('categoria', props.categoria)         // Usamos la categoría dinámica
+  datos.append('clasificacion', clasificacion.value) // Enviamos la clasificación a la base de datos
   datos.append('pdf', archivoPdf.value)
 
   try {
-    // 👇 CAMBIO AQUÍ: URL apuntando al entorno de producción en cPanel
     const respuesta = await fetch('https://api.instructivos.venceramica.com/api/productos', {
       method: 'POST',
       body: datos
@@ -51,8 +55,8 @@ const guardarNuevoProducto = async () => {
     if (!respuesta.ok) throw new Error('Error al guardar el producto')
 
     alert("¡Producto añadido con éxito!")
-    emit('guardado') // Avisamos a la vista que el producto se guardó para que recargue la lista
-    emit('cerrar')   // Cerramos el modal
+    emit('guardado') 
+    emit('cerrar')   
 
   } catch (error) {
     console.error("Error guardando:", error)
@@ -69,7 +73,7 @@ const guardarNuevoProducto = async () => {
       
       <!-- Cabecera -->
       <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-        <h3 class="text-lg font-bold text-gray-800">Añadir Nuevo Instructivo</h3>
+        <h3 class="text-lg font-bold text-gray-800">Añadir Nuevo Registro</h3>
         <button @click="emit('cerrar')" class="text-gray-400 hover:text-[#CE1126] transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -89,6 +93,17 @@ const guardarNuevoProducto = async () => {
             placeholder="Ej: Producto Nuevo..."
             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] outline-none"
             required
+          />
+        </div>
+
+        <!-- Clasificación (Ahora de solo lectura, usando la prop clasificacionInicial) -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Clasificación</label>
+          <input 
+            :value="clasificacionInicial" 
+            type="text" 
+            class="w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed" 
+            readonly 
           />
         </div>
 
@@ -128,6 +143,7 @@ const guardarNuevoProducto = async () => {
     </div>
   </div>
 </template>
+
 <style scoped>
 .animacion-entrada {
   opacity: 0;

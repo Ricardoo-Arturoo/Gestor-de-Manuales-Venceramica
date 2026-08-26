@@ -23,9 +23,9 @@ const cargarLavamanos = async () => {
     
     const datosObtenidos = await respuesta.json()
 
-    LavamanosConPedestal.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos con Pedestal')
-    LavamanosParaSobreponer.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos para Sobreponer')
-    LavamanosParaEmpotrar.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos para Empotrar')
+    LavamanosConPedestal.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos con Pedestal'&& h.clasificacion === 'Instructivo')
+    LavamanosParaSobreponer.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos para Sobreponer'&& h.clasificacion === 'Instructivo')
+    LavamanosParaEmpotrar.value = datosObtenidos.filter(h => h.tipo === 'Lavamanos para Empotrar'&& h.clasificacion === 'Instructivo')
 
   } catch (error) {
     console.error('Error:', error)

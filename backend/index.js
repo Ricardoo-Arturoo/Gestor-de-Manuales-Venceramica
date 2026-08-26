@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path'); 
 const fs = require('fs');
-const multer = require('multer'); // <-- NUEVO: Importamos multer
+const multer = require('multer');
 
 const app = express();
 
@@ -37,13 +37,10 @@ db.connect((err) => {
 // ==========================================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // La carpeta donde se guardarán los archivos
     cb(null, path.join(__dirname, 'uploads', 'pdfs'));
   },
   filename: (req, file, cb) => {
-    // Le damos un nombre único al archivo agregando la fecha para que no se sobreescriban
     const prefijoUnico = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    // Limpiamos los espacios en blanco del nombre original
     const nombreLimpio = file.originalname.replace(/\s+/g, '_');
     cb(null, prefijoUnico + '-' + nombreLimpio);
   }
@@ -56,7 +53,6 @@ const upload = multer({ storage: storage });
 // ==========================================
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
-  // CAMBIO EN LA CONSULTA: users por usuarios
   const query = 'SELECT * FROM usuarios WHERE email = ? AND password = ?';
   
   db.query(query, [email, password], (err, results) => {
@@ -94,7 +90,6 @@ app.get('/api/descargar/:nombreArchivo', (req, res) => {
 // ==========================================
 app.get('/api/productos/:categoria', (req, res) => {
   const categoria = req.params.categoria;
-  // CAMBIO EN LA CONSULTA: productos por manuales
   const sql = 'SELECT * FROM manuales WHERE categoria = ?';
   
   db.query(sql, [categoria], (err, resultados) => {
@@ -104,29 +99,23 @@ app.get('/api/productos/:categoria', (req, res) => {
 });
 
 // ==========================================
-// NUEVA RUTA: Crear Producto y Subir PDF
+// RUTA: Crear Producto y Subir PDF (Actualizada)
 // ==========================================
-// Usamos 'upload.single("pdf")' porque en Vue llamamos a nuestro archivo 'pdf' en el FormData
 app.post('/api/productos', upload.single('pdf'), (req, res) => {
-  // req.file contiene la información del PDF que subió multer
-  // req.body contiene los campos de texto (nombre, tipo, categoria)
+  // Extraemos también 'clasificacion' del req.body enviado por el FormData de Vue
+  const { nombre, tipo, categoria, clasificacion } = req.body;
   
-  const { nombre, tipo, categoria } = req.body;
-  
-  // Si multer guardó el archivo correctamente, tomamos el nombre que le asignó
   const archivoPdf = req.file ? req.file.filename : null;
-  
-  // Si en tu BD tienes una columna 'imagen', puedes asignarle un valor por defecto
-  const imagen = 'default.png'; // Reemplaza esto si usas una lógica diferente para imágenes
+  const imagen = 'default.png'; 
 
   if (!archivoPdf) {
     return res.status(400).json({ message: "Es obligatorio subir un archivo PDF" });
   }
 
-  // CAMBIO EN LA CONSULTA: productos por manuales
-  const queryInsertar = 'INSERT INTO manuales (nombre, tipo, categoria, archivo_pdf, imagen) VALUES (?, ?, ?, ?, ?)';
+  // Añadimos 'clasificacion' a la consulta SQL
+  const queryInsertar = 'INSERT INTO manuales (nombre, tipo, categoria, clasificacion, archivo_pdf, imagen) VALUES (?, ?, ?, ?, ?, ?)';
   
-  db.query(queryInsertar, [nombre, tipo, categoria, archivoPdf, imagen], (err, resultado) => {
+  db.query(queryInsertar, [nombre, tipo, categoria, clasificacion, archivoPdf, imagen], (err, resultado) => {
     if (err) {
       console.error("Error al insertar el producto en la BD:", err);
       return res.status(500).json({ message: "Error al guardar en la base de datos" });
@@ -145,7 +134,6 @@ app.post('/api/productos', upload.single('pdf'), (req, res) => {
 app.delete('/api/productos/:id', (req, res) => {
   const { id } = req.params;
 
-  // CAMBIO EN LA CONSULTA: productos por manuales
   const queryBuscar = 'SELECT archivo_pdf FROM manuales WHERE id = ?';
   
   db.query(queryBuscar, [id], (err, resultados) => {
@@ -160,12 +148,11 @@ app.delete('/api/productos/:id', (req, res) => {
         try {
           fs.unlinkSync(rutaArchivo);
         } catch (errorUnlink) {
-           console.error(`No se pudo eliminar el archivo físico ${archivoPdf}:`, errorUnlink);
+          console.error(`No se pudo eliminar el archivo físico ${archivoPdf}:`, errorUnlink);
         }
       }
     }
 
-    // CAMBIO EN LA CONSULTA: productos por manuales
     const queryEliminar = 'DELETE FROM manuales WHERE id = ?';
     db.query(queryEliminar, [id], (err, resultado) => {
       if (err) return res.status(500).json({ message: "Error al eliminar de la BD" });

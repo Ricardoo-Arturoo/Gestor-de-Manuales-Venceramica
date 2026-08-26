@@ -21,7 +21,7 @@ const cargarUrinarios = async () => {
     
     const datosObtenidos = await respuesta.json()
 
-    urinarios.value = datosObtenidos
+    urinarios.value = datosObtenidos.filter(h => h.clasificacion === 'Instructivo')
 
   } catch (error) {
     console.error('Error:', error)

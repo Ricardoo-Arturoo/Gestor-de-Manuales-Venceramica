@@ -21,7 +21,7 @@ const cargarRepuestos = async () => {
     
     const datosObtenidos = await respuesta.json()
 
-    repuestos.value = datosObtenidos.filter(h => h.clasificacion === 'Instructivo')
+    repuestos.value = datosObtenidos.filter(h => h.clasificacion === 'Ficha')
 
   } catch (error) {
     console.error('Error:', error)
@@ -68,7 +68,7 @@ const abrirFormularioAgregar = (seccion) => {
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Instructivos de Repuestos" descripcion="Seleccione el modelo de repuesto para descargar su instructivo." />
+      <HeaderVista titulo="Fichas Técnicas de Repuestos" descripcion="Seleccione el modelo de repuesto para descargar su ficha técnica." rutaVolver="/fichas" />
 
       <Cargador v-if="cargando" mensaje="Cargando Repuestos..." />
 

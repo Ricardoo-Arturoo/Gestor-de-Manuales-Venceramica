@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Sidebar from '../components/Sidebar.vue'
 import TarjetaCategoria from '../components/TarjetaCategoria.vue'
+import fondo from '@/assets/images/Fondo.png'
 
 const router = useRouter()
 
@@ -58,24 +59,31 @@ const categorias = ref([
 const seleccionarCategoria = (nombre) => {
   console.log(`Abriendo categoría: ${nombre}`)
   if (nombre === 'Inodoros') {
-    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
-    alert(`La vista para la categoría "${nombre}" está en construcción.`)
-    //router.push('/fichas/inodoros')
+    router.push('/fichas/inodoros')
   }
   else if (nombre === 'Herrajes') {
-    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
-    alert(`La vista para la categoría "${nombre}" está en construcción.`)
-    //router.push('/fichas/herrajes')
+    router.push('/fichas/herrajes')
   }
   else if (nombre === 'Griferias') {
-    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
-    alert(`La vista para la categoría "${nombre}" está en construcción.`)
-    //router.push('/fichas/griferias')
+    router.push('/fichas/griferias')
   }
   else if (nombre === 'Lavamanos') {
-    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
-    alert(`La vista para la categoría "${nombre}" está en construcción.`)
-    //router.push('/fichas/lavamanos')
+    router.push('/fichas/lavamanos')
+  }
+  else if (nombre === 'Bidet') {
+    router.push('/fichas/bidets')
+  }
+  else if (nombre === 'Urinarios') {
+    router.push('/fichas/urinarios')
+  }
+  else if (nombre === 'Asientos') {
+    router.push('/fichas/asientos')
+  }
+  else if (nombre === 'Accesorios') {
+    router.push('/fichas/accesorios')
+  }
+  else if (nombre === 'Repuestos') {
+    router.push('/fichas/repuestos')
   }
   else {
     const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
@@ -95,31 +103,47 @@ const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
   <div class="flex h-screen w-full bg-gray-50 font-sans overflow-hidden">
     <!-- Componente de navegación lateral -->
     <Sidebar />
-    <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <!-- Encabezado de la página -->
-      <div class="mb-10 animacion-entrada">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-black text-gray-800 tracking-tight">
-          Fichas Técnicas
-        </h1>
-        <p class="text-gray-500 mt-3 text-lg md:text-xl">
-          Seleccione una categoría para ver y descargar los documentos disponibles.
-        </p>
+
+    <main class="flex-1 w-full h-full overflow-y-auto relative">
+      
+      <!-- 2. Aplicas la variable de la imagen con un binding de estilo (:style) -->
+      <!-- Se redujo el alto cambiando pt-24 pb-16 por pt-16 pb-10 -->
+      <div 
+        class="relative w-full bg-cover bg-center bg-no-repeat pt-16 pb-10 px-6 md:px-12 mb-8 animacion-entrada border-b-1 border-venceramica"
+        :style="{ backgroundImage: `url(${fondo})` }"
+      >
+        <!-- Overlay oscuro para que el texto resalte -->
+        <div class="absolute inset-0 bg-black/60"></div>
+
+        <!-- Contenido del encabezado -->
+        <div class="relative z-10">
+          <h1 class=" font-black text-white tracking-tight  text-3xl md:text-4xl lg:text-5xl ">
+            Fichas Técnicas
+          </h1>
+          <!-- Reduje también un poco el margen superior del texto (mt-2) -->
+          <p class="text-gray-200 mt-2 text-lg max-w-2xl">
+            Seleccione una categoría para ver y descargar los documentos disponibles.
+          </p>
+        </div>
       </div>
       
       <!-- Cuadrícula (Grid) de Categorías -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animacion-entrada-retraso">
-        <!-- Componente reutilizable de tarjeta con soporte para subcategorías y eventos -->
-        <TarjetaCategoria 
-          v-for="categoria in categorias" 
-          :key="categoria.id" 
-          :titulo="categoria.nombre"
-          :imagen="categoria.imagen" 
-          :subcategorias="categoria.subcategorias"
-          subtitulo="Ver fichas" 
-          @click="seleccionarCategoria(categoria.nombre)"
-          @click-subcategoria="(idSub) => seleccionarSubcategoria(categoria.nombre, idSub)"
-        />
+      <div class="px-6 md:px-12 pb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animacion-entrada-retraso">
+          <!-- Componente reutilizable de tarjeta -->
+          <TarjetaCategoria 
+            v-for="categoria in categorias" 
+            :key="categoria.id" 
+            :titulo="categoria.nombre"
+            :imagen="categoria.imagen" 
+            :subcategorias="categoria.subcategorias"
+            subtitulo="Ver instructivos" 
+            @click="seleccionarCategoria(categoria.nombre)"
+            @click-subcategoria="(idSub) => seleccionarSubcategoria(categoria.nombre, idSub)"
+          />
+        </div>
       </div>
+
     </main>
   </div>
 </template>

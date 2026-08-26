@@ -6,7 +6,7 @@ import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
 
-const repuestos = ref([])
+const bidets = ref([])
 const cargando = ref(true)
 const esAdmin = ref(false)
 
@@ -14,14 +14,14 @@ const esAdmin = ref(false)
 const mostrarModal = ref(false)
 const tipoSeleccionadoParaModal = ref('') // Guardará si es Tanque, Fluxómetro o Repuesto
 
-const cargarRepuestos = async () => {
+const cargarBidets = async () => {
   try {
-    const respuesta = await fetch('https://api.instructivos.venceramica.com/api/productos/Repuestos')
+    const respuesta = await fetch('https://api.instructivos.venceramica.com/api/productos/Bidets')
     if (!respuesta.ok) throw new Error('Error al conectar con el servidor')
     
     const datosObtenidos = await respuesta.json()
 
-    repuestos.value = datosObtenidos.filter(h => h.clasificacion === 'Instructivo')
+    bidets.value = datosObtenidos.filter(h => h.clasificacion === 'Ficha')
 
   } catch (error) {
     console.error('Error:', error)
@@ -33,7 +33,7 @@ const cargarRepuestos = async () => {
 onMounted(() => {
   const usuario = localStorage.getItem('usuarioLogueado')
   if (usuario) esAdmin.value = true 
-  cargarRepuestos()
+  cargarBidets()
 })
 
 const procesarDescarga = (archivoPdf) => {
@@ -45,7 +45,7 @@ const eliminarProducto = async (id) => {
   if(confirm('¿Estás seguro de que deseas eliminar este producto y su instructivo?')) {
     try {
       await fetch(`https://api.instructivos.venceramica.com/api/productos/${id}`, { method: 'DELETE' })
-      asientos.value = asientos.value.filter(item => item.id !== id)
+      bidets.value = bidets.value.filter(item => item.id !== id)
     } catch (error) {
       console.error("Error:", error)
     }
@@ -58,7 +58,7 @@ const editarProducto = (producto) => {
 
 // Abrir modal y asignar el tipo correcto según la sección
 const abrirFormularioAgregar = (seccion) => {
-  if (seccion === 'repuestos') tipoSeleccionadoParaModal.value = 'Repuestos'
+  if (seccion === 'bidets') tipoSeleccionadoParaModal.value = 'Bidets'
   mostrarModal.value = true
 }
 </script>
@@ -68,14 +68,14 @@ const abrirFormularioAgregar = (seccion) => {
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Instructivos de Repuestos" descripcion="Seleccione el modelo de repuesto para descargar su instructivo." />
+      <HeaderVista titulo="Fichas Técnicas de Bidets" descripcion="Seleccione el modelo de bidet para descargar su ficha."rutaVolver="/fichas" />
 
-      <Cargador v-if="cargando" mensaje="Cargando Repuestos..." />
+      <Cargador v-if="cargando" mensaje="Cargando Bidets..." />
 
       <div v-else>
         <SeccionTarjetas 
-          tituloSeccion="Repuestos" 
-          :productos="repuestos" 
+          tituloSeccion="Bidets" 
+          :productos="bidets" 
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
@@ -85,10 +85,10 @@ const abrirFormularioAgregar = (seccion) => {
     <!-- Usamos nuestro componente Modal reutilizable -->
     <ModalAgregarProducto 
       :mostrar="mostrarModal"
-      categoria="Repuestos"
+      categoria="Bidets"
       :tipo="tipoSeleccionadoParaModal"
       @cerrar="mostrarModal = false"
-      @guardado="cargarRepuestos"
+      @guardado="cargarBidets"
     />
 
   </div>

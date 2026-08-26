@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar.vue"
 import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
-import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
+import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue"
 
 const inodorosDeDosPiezas = ref([])
 const inodorosDeUnaPieza = ref([])
@@ -13,7 +13,8 @@ const esAdmin = ref(false)
 
 // Estado del Modal
 const mostrarModal = ref(false)
-const tipoSeleccionadoParaModal = ref('') // Guardará si es Tanque, Fluxómetro o Repuesto
+const tipoSeleccionadoParaModal = ref('') 
+const clasificacionSeleccionadaParaModal = ref('Ficha') // 👈 Por defecto será Ficha en esta vista
 
 const cargarInodoros = async () => {
   try {
@@ -22,8 +23,9 @@ const cargarInodoros = async () => {
     
     const datosObtenidos = await respuesta.json()
 
-    inodorosDeDosPiezas.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Dos Piezas'&& h.clasificacion === 'Instructivo')
-    inodorosDeUnaPieza.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Una Pieza'&& h.clasificacion === 'Instructivo')
+    // 👇 FILTRADO DOBLE: Coincide el tipo Y la clasificación debe ser obligatoriamente "Ficha"
+    inodorosDeDosPiezas.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Dos Piezas' && h.clasificacion === 'Ficha')
+    inodorosDeUnaPieza.value = datosObtenidos.filter(h => h.tipo === 'Inodoros de Una Pieza' && h.clasificacion === 'Ficha')
 
   } catch (error) {
     console.error('Error:', error)
@@ -59,10 +61,11 @@ const editarProducto = (producto) => {
   console.log("Editar:", producto.nombre)
 }
 
-// Abrir modal y asignar el tipo correcto según la sección
 const abrirFormularioAgregar = (seccion) => {
   if (seccion === 'Inodoros de Dos Piezas') tipoSeleccionadoParaModal.value = 'Inodoros de Dos Piezas'
   else if (seccion === 'Inodoros de Una Pieza') tipoSeleccionadoParaModal.value = 'Inodoros de Una Pieza'
+  
+  clasificacionSeleccionadaParaModal.value = 'Ficha' // Forzamos que vaya como Ficha
   mostrarModal.value = true
 }
 </script>
@@ -72,9 +75,9 @@ const abrirFormularioAgregar = (seccion) => {
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Instructivos de Inodoros" descripcion="Seleccione el modelo de inodoro para descargar su instructivo." />
+      <HeaderVista titulo="Fichas Técnicas de Inodoros" descripcion="Seleccione el modelo de inodoro para descargar su ficha técnica." rutaVolver="/fichas" />
 
-      <Cargador v-if="cargando" mensaje="Cargando Inodoros..." />
+      <Cargador v-if="cargando" mensaje="Cargando Fichas..." />
 
       <div v-else>
         <SeccionTarjetas 
@@ -93,11 +96,12 @@ const abrirFormularioAgregar = (seccion) => {
       </div>
     </main>
 
-    <!-- Usamos nuestro componente Modal reutilizable -->
+    <!-- Usamos nuestro componente Modal con la clasificación por defecto en "Ficha" -->
     <ModalAgregarProducto 
       :mostrar="mostrarModal"
       categoria="Inodoros"
       :tipo="tipoSeleccionadoParaModal"
+      :clasificacion-inicial="clasificacionSeleccionadaParaModal"
       @cerrar="mostrarModal = false"
       @guardado="cargarInodoros"
     />

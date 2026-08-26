@@ -29,12 +29,12 @@ const cargarGriferias = async () => {
     const datosObtenidos = await respuesta.json()
 
     // Filtrado según la nueva categorización
-    bidet.value = datosObtenidos.filter(g => g.tipo === 'Bidet'&& g.clasificacion === 'Instructivo')
-    ducha.value = datosObtenidos.filter(g => g.tipo === 'Ducha'&& g.clasificacion === 'Instructivo')
-    lavamanos.value = datosObtenidos.filter(g => g.tipo === 'Lavamanos'&& g.clasificacion === 'Instructivo')
-    cocinas.value = datosObtenidos.filter(g => g.tipo === 'Cocinas'&& g.clasificacion === 'Instructivo')
-    fluxometros.value = datosObtenidos.filter(g => g.tipo === 'Fluxómetros'&& g.clasificacion === 'Instructivo')
-    llavesTemporizadas.value = datosObtenidos.filter(g => g.tipo === 'Llaves Temporizadas'&& g.clasificacion === 'Instructivo')
+    bidet.value = datosObtenidos.filter(g => g.tipo === 'Bidet'&& g.clasificacion === 'Ficha')
+    ducha.value = datosObtenidos.filter(g => g.tipo === 'Ducha'&& g.clasificacion === 'Ficha')
+    lavamanos.value = datosObtenidos.filter(g => g.tipo === 'Lavamanos'&& g.clasificacion === 'Ficha')
+    cocinas.value = datosObtenidos.filter(g => g.tipo === 'Cocinas'&& g.clasificacion === 'Ficha')
+    fluxometros.value = datosObtenidos.filter(g => g.tipo === 'Fluxómetros'&& g.clasificacion === 'Ficha')
+    llavesTemporizadas.value = datosObtenidos.filter(g => g.tipo === 'Llaves Temporizadas'&& g.clasificacion === 'Ficha')
 
   } catch (error) {
     console.error('Error:', error)
@@ -92,7 +92,7 @@ const abrirFormularioAgregar = (seccion) => {
     <Sidebar />
 
     <main class="flex-1 w-full h-full overflow-y-auto pt-20 px-6 pb-12 md:p-12 relative">
-      <HeaderVista titulo="Instructivos de Griferías" descripcion="Seleccione el modelo de grifería para ver o descargar su instructivo." />
+      <HeaderVista titulo="Fichas Técnicas de Griferías" descripcion="Seleccione el modelo de grifería para ver o descargar su ficha." rutaVolver="/fichas"/>
 
       <Cargador v-if="cargando" mensaje="Cargando griferías..." />
 
