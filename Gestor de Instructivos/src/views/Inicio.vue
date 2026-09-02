@@ -1,6 +1,8 @@
 <script setup>
 // Importamos el componente Sidebar (Subimos un nivel con '../' y entramos a components)
 import Sidebar from '../components/Sidebar.vue'
+import imagenInicio from '@/assets/images/IMG_INICIO.jpg'
+
 </script>
 
 <template>
@@ -16,7 +18,7 @@ import Sidebar from '../components/Sidebar.vue'
       <!-- Imagen de Fondo con efecto de desvanecido -->
       <div
         class="absolute inset-0 bg-cover bg-center imagen-desvanecida"
-        style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1920&auto=format&fit=crop');"
+        :style="{ backgroundImage: `url(${imagenInicio})` }"
       ></div>
 
       <!-- Capa Transparente Oscura (Overlay) para que el texto se lea bien -->

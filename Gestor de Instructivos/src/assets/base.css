@@ -84,3 +84,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+img {
+  -webkit-user-drag: none;
+  /* Opcional: evita que se seleccionen como texto */
+  user-select: none; 
+  -webkit-user-select: none;
+}
