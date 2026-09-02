@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" 
+import imgGriferias from '@/assets/images/GRIFERIAS.png'
 
 // Variables de estado basadas en la nueva división
 const bidet = ref([])
@@ -20,6 +21,7 @@ const esAdmin = ref(false)
 // Estado del Modal
 const mostrarModal = ref(false)
 const tipoSeleccionadoParaModal = ref('') 
+const clasificacionSeleccionadaParaModal = ref('Ficha')
 
 const cargarGriferias = async () => {
   try {
@@ -82,7 +84,7 @@ const abrirFormularioAgregar = (seccion) => {
   else if (seccion === 'Para Cocinas') tipoSeleccionadoParaModal.value = 'Cocinas'
   else if (seccion === 'Fluxómetros') tipoSeleccionadoParaModal.value = 'Fluxómetros'
   else if (seccion === 'Llaves Temporizadas') tipoSeleccionadoParaModal.value = 'Llaves Temporizadas'
-  
+  clasificacionSeleccionadaParaModal.value = 'Ficha' 
   mostrarModal.value = true
 }
 </script>
@@ -105,6 +107,7 @@ const abrirFormularioAgregar = (seccion) => {
             class="ml-5"
             tituloSeccion="Para Bidet" 
             :productos="bidet" 
+            :imagen="imgGriferias"
             :estaLogueado="esAdmin"
             @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
           />
@@ -113,6 +116,7 @@ const abrirFormularioAgregar = (seccion) => {
             class="ml-5"
             tituloSeccion="Para Ducha" 
             :productos="ducha" 
+            :imagen="imgGriferias"
             :estaLogueado="esAdmin"
             @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
           />
@@ -121,6 +125,7 @@ const abrirFormularioAgregar = (seccion) => {
             class="ml-5"
             tituloSeccion="Para Lavamanos" 
             :productos="lavamanos" 
+            :imagen="imgGriferias"
             :estaLogueado="esAdmin"
             @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
           />
@@ -130,6 +135,7 @@ const abrirFormularioAgregar = (seccion) => {
         <SeccionTarjetas 
           tituloSeccion="Para Cocinas" 
           :productos="cocinas" 
+          :imagen="imgGriferias"
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
@@ -137,6 +143,7 @@ const abrirFormularioAgregar = (seccion) => {
         <SeccionTarjetas 
           tituloSeccion="Fluxómetros" 
           :productos="fluxometros" 
+          :imagen="imgGriferias"
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
@@ -144,6 +151,7 @@ const abrirFormularioAgregar = (seccion) => {
         <SeccionTarjetas 
           tituloSeccion="Llaves Temporizadas" 
           :productos="llavesTemporizadas" 
+          :imagen="imgGriferias"
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
@@ -154,6 +162,7 @@ const abrirFormularioAgregar = (seccion) => {
       :mostrar="mostrarModal"
       categoria="Griferias"
       :tipo="tipoSeleccionadoParaModal"
+      :clasificacion-inicial="clasificacionSeleccionadaParaModal"
       @cerrar="mostrarModal = false"
       @guardado="cargarGriferias"
     />

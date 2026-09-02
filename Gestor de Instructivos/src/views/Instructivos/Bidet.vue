@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
+import imgBidets from '@/assets/images/BIDETS.png'
 
 const bidets = ref([])
 const cargando = ref(true)
@@ -77,6 +78,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Bidets" 
           :productos="bidets" 
           :estaLogueado="esAdmin"
+          :imagen="imgBidets"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
       </div>

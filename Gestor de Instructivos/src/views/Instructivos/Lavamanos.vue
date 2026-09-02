@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
+import imgLavamanos from '@/assets/images/LAVAMANOS.png'
 
 const LavamanosConPedestal = ref([])
 const LavamanosParaSobreponer = ref([])
@@ -83,6 +84,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Lavamanos con Pedestal" 
           :productos="LavamanosConPedestal" 
           :estaLogueado="esAdmin"
+          :imagen="imgLavamanos"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
@@ -90,6 +92,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Lavamanos para Sobreponer" 
           :productos="LavamanosParaSobreponer" 
           :estaLogueado="esAdmin"
+          :imagen="imgLavamanos"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
 
@@ -97,6 +100,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Lavamanos para Empotrar" 
           :productos="LavamanosParaEmpotrar" 
           :estaLogueado="esAdmin"
+          :imagen="imgLavamanos"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
       </div>

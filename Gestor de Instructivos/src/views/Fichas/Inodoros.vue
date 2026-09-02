@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue"
+import imgInodoros from '@/assets/images/INODOROS.png'
 
 const inodorosDeDosPiezas = ref([])
 const inodorosDeUnaPieza = ref([])
@@ -84,6 +85,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Inodoros de Dos Piezas" 
           :productos="inodorosDeDosPiezas" 
           :estaLogueado="esAdmin"
+          :imagen="imgInodoros"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
@@ -91,6 +93,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Inodoros de Una Pieza" 
           :productos="inodorosDeUnaPieza" 
           :estaLogueado="esAdmin"
+          :imagen="imgInodoros"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
       </div>

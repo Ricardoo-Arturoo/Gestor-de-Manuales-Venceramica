@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" 
+import imgGriferias from '@/assets/images/GRIFERIAS.png'
 
 // Variables de estado basadas en la nueva división
 const bidet = ref([])
@@ -101,12 +102,14 @@ const abrirFormularioAgregar = (seccion) => {
         <div class="mb-8 border-l-4 border-[#CE1126] pl-4">
           <p class="text-2xl font-bold text-gray-800 mb-6 uppercase">Para Baños</p>
           
+          <!-- 2. AÑADE LA PROPIEDAD :imagen CON SU RESPECTIVA VARIABLE IMPORTADA -->
           <SeccionTarjetas 
             id="bidet"
             class="ml-5 scroll-mt-24"
             tituloSeccion="Para Bidet" 
             :productos="bidet" 
             :estaLogueado="esAdmin"
+            :imagen="imgGriferias"
             @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
           />
 
@@ -116,6 +119,7 @@ const abrirFormularioAgregar = (seccion) => {
             tituloSeccion="Para Ducha" 
             :productos="ducha" 
             :estaLogueado="esAdmin"
+            :imagen="imgGriferias"
             @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
           />
 
@@ -125,6 +129,7 @@ const abrirFormularioAgregar = (seccion) => {
             tituloSeccion="Para Lavamanos" 
             :productos="lavamanos" 
             :estaLogueado="esAdmin"
+            :imagen="imgGriferias"
             @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
           />
         </div>
@@ -136,6 +141,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Para Cocinas" 
           :productos="cocinas" 
           :estaLogueado="esAdmin"
+          :imagen="imgGriferias"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
 
@@ -145,6 +151,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Fluxómetros" 
           :productos="fluxometros" 
           :estaLogueado="esAdmin"
+          :imagen="imgGriferias"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
 
@@ -154,6 +161,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Llaves Temporizadas" 
           :productos="llavesTemporizadas" 
           :estaLogueado="esAdmin"
+          :imagen="imgGriferias"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar"
         />
       </div>

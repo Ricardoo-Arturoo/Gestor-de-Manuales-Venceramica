@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
+import imgBidets from '@/assets/images/BIDETS.png'
 
 const bidets = ref([])
 const cargando = ref(true)
@@ -13,6 +14,7 @@ const esAdmin = ref(false)
 // Estado del Modal
 const mostrarModal = ref(false)
 const tipoSeleccionadoParaModal = ref('') // Guardará si es Tanque, Fluxómetro o Repuesto
+const clasificacionSeleccionadaParaModal = ref('Ficha')
 
 const cargarBidets = async () => {
   try {
@@ -59,6 +61,7 @@ const editarProducto = (producto) => {
 // Abrir modal y asignar el tipo correcto según la sección
 const abrirFormularioAgregar = (seccion) => {
   if (seccion === 'bidets') tipoSeleccionadoParaModal.value = 'Bidets'
+  clasificacionSeleccionadaParaModal.value = 'Ficha'
   mostrarModal.value = true
 }
 </script>
@@ -76,6 +79,7 @@ const abrirFormularioAgregar = (seccion) => {
         <SeccionTarjetas 
           tituloSeccion="Bidets" 
           :productos="bidets" 
+          :imagen="imgBidets"
           :estaLogueado="esAdmin"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
@@ -87,6 +91,7 @@ const abrirFormularioAgregar = (seccion) => {
       :mostrar="mostrarModal"
       categoria="Bidets"
       :tipo="tipoSeleccionadoParaModal"
+      :clasificacion-inicial="clasificacionSeleccionadaParaModal"
       @cerrar="mostrarModal = false"
       @guardado="cargarBidets"
     />

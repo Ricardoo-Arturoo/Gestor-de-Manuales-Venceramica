@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
+import imgUrinarios from '@/assets/images/URINARIOS.png'
 
 const urinarios = ref([])
 const cargando = ref(true)
@@ -77,6 +78,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Urinarios" 
           :productos="urinarios" 
           :estaLogueado="esAdmin"
+          :imagen="imgUrinarios"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
       </div>

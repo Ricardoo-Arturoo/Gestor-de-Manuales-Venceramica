@@ -5,7 +5,8 @@ import TarjetaAgregar from "@/components/TarjetaAgregar.vue"
 defineProps({
   tituloSeccion: { type: String, required: true },
   productos: { type: Array, required: true },
-  estaLogueado: { type: Boolean, default: false }
+  estaLogueado: { type: Boolean, default: false },
+  imagen: { type: [String, Object], default: null }
 })
 
 // Se eliminó 'editar' de los eventos emitidos
@@ -35,7 +36,7 @@ defineEmits(['descargar', 'eliminar', 'agregar'])
         <div class="flex-1 cursor-pointer min-w-0" @click="$emit('descargar', item.archivo_pdf)">
           <TarjetaCategoria 
             :titulo="item.nombre"
-            :imagen="item.imagen"
+            :imagen="imagen"
             subtitulo="Descargar PDF"
           />
         </div>

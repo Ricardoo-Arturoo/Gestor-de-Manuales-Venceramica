@@ -5,6 +5,7 @@ import HeaderVista from "@/components/HeaderVista.vue"
 import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
+import imgHerrajes from '@/assets/images/HERRAJES.png'
 
 const HerrajesParaInodorosDeDosPiezas = ref([])
 const HerrajesParaInodorosDeUnaPieza = ref([])
@@ -82,6 +83,7 @@ const abrirFormularioAgregar = (seccion) => {
           tituloSeccion="Herrajes para Inodoros de Dos Piezas" 
           :productos="HerrajesParaInodorosDeDosPiezas" 
           :estaLogueado="esAdmin"
+          :imagen="imgHerrajes"
           @descargar="procesarDescarga" @eliminar="eliminarProducto" @editar="editarProducto" @agregar="abrirFormularioAgregar" 
         />
 
