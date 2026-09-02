@@ -4,6 +4,15 @@ import { useRouter } from 'vue-router'
 import Sidebar from '../components/Sidebar.vue'
 import TarjetaCategoria from '../components/TarjetaCategoria.vue'
 import fondoPoceta from '@/assets/images/Poceta.png'
+import ImagenInodoro from '@/assets/images/ICONOS VENCERAMICA/INODOROS.png'
+import ImagenLavamanos from '@/assets/images/ICONOS VENCERAMICA/LAVAMANOS.png'
+import ImagenBidet from '@/assets/images/ICONOS VENCERAMICA/BIDETS.png'
+import ImagenUrinarios from '@/assets/images/ICONOS VENCERAMICA/URINARIOS.png'
+import ImagenAsientos from '@/assets/images/ICONOS VENCERAMICA/ASIENTOS.png'
+import ImagenHerrajes from '@/assets/images/ICONOS VENCERAMICA/HERRAJES.png'
+import ImagenGriferias from '@/assets/images/ICONOS VENCERAMICA/GRIFERIAS.png'
+import ImagenAccesorios from '@/assets/images/ICONOS VENCERAMICA/ACCESORIOS Y REPUESTOS.png'
+import ImagenRepuestos from '@/assets/images/ICONOS VENCERAMICA/ACCESORIOS Y REPUESTOS.png'
 
 const router = useRouter()
 
@@ -11,27 +20,25 @@ const router = useRouter()
 const categorias = ref([
   { id: 1, 
     nombre: 'Inodoros',
-    imagen: '/images/Poceta.png',
+    imagen: ImagenInodoro,
     subcategorias: [
       { id: 'inodoro-de-dos-piezas', nombre: 'Inodoro de Dos Piezas' },
       { id: 'inodoro-de-una-pieza', nombre: 'Inodoro de Una Pieza' },
     ]
   },
-
   { id: 2, nombre: 'Lavamanos',
-    imagen: '/img/lavamanos.png',
+    imagen: ImagenLavamanos,
     subcategorias: [
       { id: 'lavamanos-con-pedestal', nombre: 'Lavamanos con Pedestal' },
       { id: 'lavamanos-para-sobreponer', nombre: 'Lavamanos para Sobreponer' },
       { id: 'lavamanos-para-empotrar', nombre: 'Lavamanos para Empotrar' },
     ]
    },
-
-  { id: 3, nombre: 'Bidet', imagen: '/img/bidet.png' },
-  { id: 4, nombre: 'Urinarios', imagen: '/img/urinarios.png' },
-  { id: 5, nombre: 'Asientos', imagen: '/img/asientos.png' },
+  { id: 3, nombre: 'Bidet', imagen: ImagenBidet },
+  { id: 4, nombre: 'Urinarios', imagen: ImagenUrinarios },
+  { id: 5, nombre: 'Asientos', imagen: ImagenAsientos },
   { id: 6, nombre: 'Herrajes', 
-    imagen: '/img/herrajes.png',
+    imagen: ImagenHerrajes,
     subcategorias: [
       { id: 'herrajes-para-inodoros-de-dos-piezas', nombre: 'Herrajes para Inodoros de Dos Piezas' },
       { id: 'herrajes-para-inodoros-de-una-pieza', nombre: 'Herrajes para Inodoros de Una Pieza' },
@@ -40,7 +47,7 @@ const categorias = ref([
   { 
     id: 7, 
     nombre: 'Griferias', 
-    imagen: null,
+    imagen: ImagenGriferias,
     // Subcategorías añadidas para el efecto hover y el scroll
     subcategorias: [
       { id: 'bidet', nombre: 'Para Bidet' },
@@ -51,55 +58,37 @@ const categorias = ref([
       { id: 'llaves-temporizadas', nombre: 'Llaves Temporizadas' }
     ]
   },
-  { id: 8, nombre: 'Accesorios', imagen: null },
-  { id: 9, nombre: 'Repuestos', imagen: null },
+  { id: 8, nombre: 'Accesorios', imagen: ImagenAccesorios },
+  { id: 9, nombre: 'Repuestos', imagen: ImagenRepuestos },
 ])
 
-// Lógica de redirección al hacer clic en una tarjeta principal
+// Lógica dinámica de redirección al hacer clic en una tarjeta principal
 const seleccionarCategoria = (nombre) => {
   console.log(`Abriendo categoría: ${nombre}`)
-  if (nombre === 'Inodoros') {
-    router.push('/instructivos/inodoros')
-  }
-  else if (nombre === 'Herrajes') {
-    router.push('/instructivos/herrajes')
-  }
-  else if (nombre === 'Griferias') {
-    router.push('/instructivos/griferias')
-  }
-  else if (nombre === 'Lavamanos') {
-    router.push('/instructivos/lavamanos')
-  }
-  else if (nombre === 'Bidet') {
-    router.push('/instructivos/bidet')
-  }
-  else if (nombre === 'Urinarios') {
-    router.push('/instructivos/urinarios')
-  }
-  else if (nombre === 'Asientos') {
-    router.push('/instructivos/asientos')
-  }
-  else if (nombre === 'Accesorios') {
-    router.push('/instructivos/accesorios')
-  }
-  else if (nombre === 'Repuestos') {
-    router.push('/instructivos/repuestos')
-  }
-  else {
-    const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
+  
+  // Convierte el nombre a un formato de URL (ej: "Inodoros" -> "inodoros", "Otras Cosas" -> "otras-cosas")
+  const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
+  
+  // Lista de rutas que sabemos que existen y están activas en /instructivos/
+  const rutasActivas = [
+    'inodoros', 'herrajes', 'griferias', 'lavamanos', 
+    'bidet', 'urinarios', 'asientos', 'accesorios', 'repuestos'
+  ]
+
+  if (rutasActivas.includes(rutaFormateada)) {
+    router.push(`/instructivos/${rutaFormateada}`)
+  } else {
     alert(`La vista para la categoría "${nombre}" está en construcción.`)
   }
 }
 
-// Lógica para manejar el clic en una subcategoría específica (deslizamiento)
+// Lógica dinámica para manejar el clic en cualquier subcategoría específica (deslizamiento)
 const seleccionarSubcategoria = (nombreCategoria, idSubcategoria) => {
-  if (nombreCategoria === 'Griferias') {
-    router.push({ path: '/instructivos/griferias', hash: `#${idSubcategoria}` })
-  }
+  const rutaFormateada = nombreCategoria.toLowerCase().replace(/ /g, '-')
+  
+  // Navega a la ruta base de la categoría adjuntando el hash (#) de la subcategoría
+  router.push({ path: `/instructivos/${rutaFormateada}`, hash: `#${idSubcategoria}` })
 }
-
-
-
 </script>
 
 <template>

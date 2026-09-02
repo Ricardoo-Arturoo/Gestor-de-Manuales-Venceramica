@@ -6,6 +6,7 @@ import Cargador from "@/components/Cargador.vue"
 import SeccionTarjetas from "@/components/SeccionTarjetas.vue"
 import ModalAgregarProducto from "@/components/ModalAgregarProducto.vue" // <-- Importamos nuestro nuevo súper componente
 
+
 const inodorosDeDosPiezas = ref([])
 const inodorosDeUnaPieza = ref([])
 const cargando = ref(true)

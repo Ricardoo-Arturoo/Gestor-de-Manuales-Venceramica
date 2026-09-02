@@ -102,7 +102,8 @@ const abrirFormularioAgregar = (seccion) => {
           <p class="text-2xl font-bold text-gray-800 mb-6 uppercase">Para Baños</p>
           
           <SeccionTarjetas 
-            class="ml-5"
+            id="bidet"
+            class="ml-5 scroll-mt-24"
             tituloSeccion="Para Bidet" 
             :productos="bidet" 
             :estaLogueado="esAdmin"
@@ -110,7 +111,8 @@ const abrirFormularioAgregar = (seccion) => {
           />
 
           <SeccionTarjetas 
-            class="ml-5"
+            id="ducha"
+            class="ml-5 scroll-mt-24"
             tituloSeccion="Para Ducha" 
             :productos="ducha" 
             :estaLogueado="esAdmin"
@@ -118,7 +120,8 @@ const abrirFormularioAgregar = (seccion) => {
           />
 
           <SeccionTarjetas 
-            class="ml-5"
+            id="lavamanos"
+            class="ml-5 scroll-mt-24"
             tituloSeccion="Para Lavamanos" 
             :productos="lavamanos" 
             :estaLogueado="esAdmin"
@@ -128,6 +131,8 @@ const abrirFormularioAgregar = (seccion) => {
 
         <!-- Categorías Independientes -->
         <SeccionTarjetas 
+          id="cocinas"
+          class="scroll-mt-24"
           tituloSeccion="Para Cocinas" 
           :productos="cocinas" 
           :estaLogueado="esAdmin"
@@ -135,6 +140,8 @@ const abrirFormularioAgregar = (seccion) => {
         />
 
         <SeccionTarjetas 
+          id="fluxometros"
+          class="scroll-mt-24"
           tituloSeccion="Fluxómetros" 
           :productos="fluxometros" 
           :estaLogueado="esAdmin"
@@ -142,6 +149,8 @@ const abrirFormularioAgregar = (seccion) => {
         />
 
         <SeccionTarjetas 
+          id="llaves-temporizadas"
+          class="scroll-mt-24"
           tituloSeccion="Llaves Temporizadas" 
           :productos="llavesTemporizadas" 
           :estaLogueado="esAdmin"
