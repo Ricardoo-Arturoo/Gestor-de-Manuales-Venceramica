@@ -144,22 +144,22 @@ const handleGuest = async () => {
       </div>
     </div>
 
-    <!-- LADO DERECHO: Fondo degradado + Imagen ligeramente difuminada + Logo al frente -->
+    <!-- LADO DERECHO: Fondo degradado + Imagen ligeramente difuminada fija + Logo -->
     <div class="relative w-full md:w-[60%] bg-gray-900 flex items-center justify-center p-12 min-h-[30vh] md:min-h-screen overflow-hidden">
  
-      <!-- IMAGEN DE FONDO CON BLUR SUAVE -->
+      <!-- IMAGEN DE FONDO CON BLUR FIJO -->
       <img 
         :src="imgFondo" 
         alt="Fondo Vencerámica" 
-        class="absolute inset-0 w-full h-full object-cover imagen-desvanecida pointer-events-none select-none"
+        class="absolute inset-0 w-full h-full object-cover imagen-fondo pointer-events-none select-none"
         draggable="false"
       />
 
       <!-- Capa oscura para contraste -->
-      <div class="absolute inset-0 bg-black/40 capa-desvanecida"></div>
+      <div class="absolute inset-0 bg-black/40"></div>
 
       <!-- CONTENIDO EN PRIMER PLANO -->
-      <div class="relative z-10 flex flex-col items-center justify-center text-center logo-desvanecido">
+      <div class="relative z-10 flex flex-col items-center justify-center text-center">
         <img 
           :src="imgLogo" 
           alt="Logo Vencerámica" 
@@ -174,50 +174,9 @@ const handleGuest = async () => {
 </template>
 
 <style scoped>
-.imagen-desvanecida {
-  opacity: 0;
+/* Solo conservamos el desenfoque estático y la escala */
+.imagen-fondo {
   filter: blur(4px);
   transform: scale(1.02);
-  animation: fadeInBlur 2s ease-in-out forwards;
-}
-
-.capa-desvanecida {
-  opacity: 0;
-  animation: fadeIn 2s ease-in-out forwards;
-}
-
-.logo-desvanecido {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: fadeUp 1.5s ease-out 0.3s forwards;
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes fadeInBlur {
-  0% {
-    opacity: 0;
-    filter: blur(4px);
-    transform: scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(4px);
-    transform: scale(1.02);
-  }
-}
-
-@keyframes fadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 </style>
