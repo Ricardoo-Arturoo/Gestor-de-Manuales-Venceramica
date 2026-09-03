@@ -69,7 +69,7 @@ const seleccionarCategoria = (nombre) => {
   const rutaFormateada = nombre.toLowerCase().replace(/ /g, '-')
   
   // Lista de rutas válidas
-  const rutasActivas = ['inodoros', 'herrajes', 'griferias', 'lavamanos', 'bidets', 'urinarios', 'asientos', 'accesorios', 'repuestos']
+  const rutasActivas = ['inodoros', 'herrajes', 'griferias', 'lavamanos', 'bidets', 'urinarios', 'asientos', 'accesorios-y-repuestos']
   
   // Ajuste para plural de bidet
   const rutaFinal = rutaFormateada === 'bidet' ? 'bidets' : rutaFormateada

@@ -10,6 +10,7 @@ import Fichas from '@/views/Fichas.vue'
 import Bidet from '@/views/Instructivos/Bidet.vue'
 import Urinarios from '@/views/Instructivos/Urinarios.vue'
 import Asientos from '@/views/Instructivos/Asientos.vue'
+import AccesoriosYRepuestos from '@/views/Instructivos/AccesoriosYRepuestos.vue'
 import InodorosFichas from '@/views/Fichas/Inodoros.vue'
 import LavamanosFichas from '@/views/Fichas/Lavamanos.vue'
 import BidetFichas from '@/views/Fichas/Bidets.vue'
@@ -17,6 +18,8 @@ import UrinariosFichas from '@/views/Fichas/Urinarios.vue'
 import AsientosFichas from '@/views/Fichas/Asientos.vue'
 import HerrajesFichas from '@/views/Fichas/Herrajes.vue'
 import GriferiasFichas from '@/views/Fichas/Griferias.vue'
+import AccesoriosYRepuestosFichas from '@/views/Fichas/AccesoriosYRepuestos.vue'
+
 
 
 
@@ -79,6 +82,11 @@ const router = createRouter({
       component: Asientos
     },
     {
+      path: '/instructivos/accesorios-y-repuestos',
+      name: 'accesorios-y-repuestos',
+      component: AccesoriosYRepuestos
+    },
+    {
       path: '/fichas/inodoros',
       name: 'inodoros-fichas',
       component: InodorosFichas
@@ -113,7 +121,12 @@ const router = createRouter({
       name: 'griferias-fichas',
       component: GriferiasFichas
     },
-
+    {
+      path: '/fichas/accesorios-y-repuestos',
+      name: 'accesorios-y-repuestos-fichas',
+      component: AccesoriosYRepuestosFichas
+    },
+    
 
   ],
   scrollBehavior(to, from, savedPosition) {
