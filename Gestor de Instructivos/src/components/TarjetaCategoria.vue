@@ -13,7 +13,7 @@
       class="absolute inset-0 w-full p-6 flex items-center space-x-4 text-left cursor-pointer focus:outline-none">
       <!-- CONTENEDOR DEL ICONO / IMAGEN -->
       <div
-        class="flex-shrink-0 w-14 h-14 bg-[#CE1126]/10 text-[#CE1126] rounded-xl flex items-center justify-center overflow-hidden transition-colors duration-300"
+        class="flex-shrink-0 w-14 h-14 bg-white text-[#CE1126] rounded-xl flex items-center justify-center overflow-hidden transition-colors duration-300"
         :class="{ 'bg-[#AB1A2D] text-white': menuAbierto }">
 
         <!-- Si se pasa una imagen (como ImagenInodoro), se muestra aquí -->

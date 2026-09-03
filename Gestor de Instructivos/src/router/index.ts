@@ -10,8 +10,6 @@ import Fichas from '@/views/Fichas.vue'
 import Bidet from '@/views/Instructivos/Bidet.vue'
 import Urinarios from '@/views/Instructivos/Urinarios.vue'
 import Asientos from '@/views/Instructivos/Asientos.vue'
-import Accesorios from '@/views/Instructivos/Accesorios.vue'
-import Repuestos from '@/views/Instructivos/Repuestos.vue'
 import InodorosFichas from '@/views/Fichas/Inodoros.vue'
 import LavamanosFichas from '@/views/Fichas/Lavamanos.vue'
 import BidetFichas from '@/views/Fichas/Bidets.vue'
@@ -19,8 +17,7 @@ import UrinariosFichas from '@/views/Fichas/Urinarios.vue'
 import AsientosFichas from '@/views/Fichas/Asientos.vue'
 import HerrajesFichas from '@/views/Fichas/Herrajes.vue'
 import GriferiasFichas from '@/views/Fichas/Griferias.vue'
-import AccesoriosFichas from '@/views/Fichas/Accesorios.vue'
-import RepuestosFichas from '@/views/Fichas/Repuestos.vue'
+
 
 
 const router = createRouter({
@@ -82,16 +79,6 @@ const router = createRouter({
       component: Asientos
     },
     {
-      path: '/instructivos/accesorios',         // Ruta para los accesorios
-      name: 'accesorios',
-      component: Accesorios
-    },
-    {
-      path: '/instructivos/repuestos',         // Ruta para los repuestos
-      name: 'repuestos',
-      component: Repuestos
-    },
-    {
       path: '/fichas/inodoros',
       name: 'inodoros-fichas',
       component: InodorosFichas
@@ -126,16 +113,7 @@ const router = createRouter({
       name: 'griferias-fichas',
       component: GriferiasFichas
     },
-    {
-      path: '/fichas/accesorios',
-      name: 'accesorios-fichas',
-      component: AccesoriosFichas
-    },
-    {
-      path: '/fichas/repuestos',
-      name: 'repuestos-fichas',
-      component: RepuestosFichas
-    }
+
 
   ],
   scrollBehavior(to, from, savedPosition) {

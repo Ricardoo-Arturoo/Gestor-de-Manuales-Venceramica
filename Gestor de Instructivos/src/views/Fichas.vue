@@ -12,7 +12,6 @@ import ImagenAsientos from '@/assets/images/ASIENTOS.png'
 import ImagenHerrajes from '@/assets/images/HERRAJES.png'
 import ImagenGriferias from '@/assets/images/GRIFERIAS.png'
 import ImagenAccesorios from '@/assets/images/ACCESORIOS Y REPUESTOS.png'
-import ImagenRepuestos from '@/assets/images/ACCESORIOS Y REPUESTOS.png'
 
 const router = useRouter()
 
@@ -56,8 +55,14 @@ const categorias = ref([
       { id: 'llaves-temporizadas', nombre: 'Llaves Temporizadas' }
     ]
   },
-  { id: 8, nombre: 'Accesorios', imagen: ImagenAccesorios },
-  { id: 9, nombre: 'Repuestos', imagen: ImagenRepuestos },
+  { id: 8, 
+    nombre: 'Accesorios y Repuestos', 
+    imagen: ImagenAccesorios,
+    subcategorias: [
+      { id: 'accesorios', nombre: 'Accesorios' },
+      { id: 'repuestos', nombre: 'Repuestos' },
+    ]
+  },
 ])
 
 const seleccionarCategoria = (nombre) => {
