@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise'); // Modificado para usar promesas
 const cors = require('cors');
 const path = require('path'); 
 const fs = require('fs');
@@ -12,24 +12,35 @@ const app = express();
 app.use(cors());
 app.use(express.json()); 
 
-// Conexión a MySQL
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
+// ==========================================
+// CONEXIÓN A MYSQL (POOL OPTIMIZADO)
+// ==========================================
+const db = mysql.createPool({
+  // En tu .env usa '127.0.0.1' en lugar de 'localhost' para acelerar la red
+  host: process.env.DB_HOST || '127.0.0.1',
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  enableKeepAlive: true,        // Mantiene activa la conexión TCP
+  keepAliveInitialDelay: 10000   // Envía pings para evitar el cierre por inactividad
 });
+
+// Comprobar la conexión al iniciar
+(async () => {
+  try {
+    const connection = await db.getConnection();
+    console.log('¡Conectado exitosamente a la base de datos MySQL mediante Pool!');
+    connection.release();
+  } catch (err) {
+    console.error('Error conectando a la base de datos:', err);
+  }
+})();
 
 app.get('/', (req, res) => {
-  res.send('API Backend de Manuales Venceramica en funcionamiento ');
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error('Error conectando a la base de datos:', err);
-    return;
-  }
-  console.log('¡Conectado exitosamente a la base de datos MySQL!');
+  res.send('API Backend de Manuales Venceramica en funcionamiento');
 });
 
 // ==========================================
@@ -51,12 +62,12 @@ const upload = multer({ storage: storage });
 // ==========================================
 // RUTA: Login
 // ==========================================
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   const query = 'SELECT * FROM usuarios WHERE email = ? AND password = ?';
   
-  db.query(query, [email, password], (err, results) => {
-    if (err) return res.status(500).json({ message: 'Error en el servidor' });
+  try {
+    const [results] = await db.query(query, [email, password]);
 
     if (results.length > 0) {
       const user = results[0];
@@ -67,7 +78,10 @@ app.post('/api/login', (req, res) => {
     } else {
       res.status(401).json({ message: 'Correo o contraseña incorrectos' });
     }
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error en el servidor' });
+  }
 });
 
 // ==========================================
@@ -88,23 +102,24 @@ app.get('/api/descargar/:nombreArchivo', (req, res) => {
 // ==========================================
 // RUTA: Productos por Categoría
 // ==========================================
-app.get('/api/productos/:categoria', (req, res) => {
+app.get('/api/productos/:categoria', async (req, res) => {
   const categoria = req.params.categoria;
   const sql = 'SELECT * FROM manuales WHERE categoria = ?';
   
-  db.query(sql, [categoria], (err, resultados) => {
-    if (err) return res.status(500).json({ error: "Error en la base de datos" });
+  try {
+    const [resultados] = await db.query(sql, [categoria]);
     res.json(resultados);
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error en la base de datos" });
+  }
 });
 
 // ==========================================
-// RUTA: Crear Producto y Subir PDF (Actualizada)
+// RUTA: Crear Producto y Subir PDF
 // ==========================================
-app.post('/api/productos', upload.single('pdf'), (req, res) => {
-  // Extraemos también 'clasificacion' del req.body enviado por el FormData de Vue
+app.post('/api/productos', upload.single('pdf'), async (req, res) => {
   const { nombre, tipo, categoria, clasificacion } = req.body;
-  
   const archivoPdf = req.file ? req.file.filename : null;
   const imagen = 'default.png'; 
 
@@ -112,33 +127,33 @@ app.post('/api/productos', upload.single('pdf'), (req, res) => {
     return res.status(400).json({ message: "Es obligatorio subir un archivo PDF" });
   }
 
-  // Añadimos 'clasificacion' a la consulta SQL
   const queryInsertar = 'INSERT INTO manuales (nombre, tipo, categoria, clasificacion, archivo_pdf, imagen) VALUES (?, ?, ?, ?, ?, ?)';
   
-  db.query(queryInsertar, [nombre, tipo, categoria, clasificacion, archivoPdf, imagen], (err, resultado) => {
-    if (err) {
-      console.error("Error al insertar el producto en la BD:", err);
-      return res.status(500).json({ message: "Error al guardar en la base de datos" });
-    }
-    
+  try {
+    const [resultado] = await db.query(queryInsertar, [nombre, tipo, categoria, clasificacion, archivoPdf, imagen]);
     res.status(201).json({ 
       message: "Producto y manual guardados correctamente",
       id: resultado.insertId
     });
-  });
+  } catch (err) {
+    console.error("Error al insertar el producto en la BD:", err);
+    res.status(500).json({ message: "Error al guardar en la base de datos" });
+  }
 });
 
 // ==========================================
 // RUTA: Eliminar Producto y su PDF
 // ==========================================
-app.delete('/api/productos/:id', (req, res) => {
+app.delete('/api/productos/:id', async (req, res) => {
   const { id } = req.params;
-
   const queryBuscar = 'SELECT archivo_pdf FROM manuales WHERE id = ?';
   
-  db.query(queryBuscar, [id], (err, resultados) => {
-    if (err) return res.status(500).json({ message: "Error en la base de datos" });
-    if (resultados.length === 0) return res.status(404).json({ message: "Producto no encontrado" });
+  try {
+    const [resultados] = await db.query(queryBuscar, [id]);
+    
+    if (resultados.length === 0) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
 
     const archivoPdf = resultados[0].archivo_pdf;
 
@@ -154,11 +169,13 @@ app.delete('/api/productos/:id', (req, res) => {
     }
 
     const queryEliminar = 'DELETE FROM manuales WHERE id = ?';
-    db.query(queryEliminar, [id], (err, resultado) => {
-      if (err) return res.status(500).json({ message: "Error al eliminar de la BD" });
-      res.status(200).json({ message: "Producto y manual eliminados" });
-    });
-  });
+    await db.query(queryEliminar, [id]);
+    res.status(200).json({ message: "Producto y manual eliminados" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error en la base de datos" });
+  }
 });
 
 // Iniciar el servidor
