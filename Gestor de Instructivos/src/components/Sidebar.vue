@@ -137,7 +137,7 @@ const anioActual = new Date().getFullYear()
     </nav>
 
     <!-- Zona Inferior con LÍNEA DIVISORIA MÁS MARCADA -->
-    <div class="px-4 py-6 border-t-2 border-gray-200 bg-gray-50/80 space-y-3">
+    <div class="px-4 py-1 border-t-2 border-gray-200 bg-gray-50/80 space-y-3">
       
       <!-- Web Oficial -->
       <a 
