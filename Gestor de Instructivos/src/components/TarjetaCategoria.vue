@@ -5,7 +5,7 @@
     para que la transición de tamaño sea fluida y calculada.
   -->
   <div
-    class="relative w-full bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#CE1126]/30 transition-all duration-500 ease-in-out overflow-hidden"
+    class="relative min-h-[154px] bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#CE1126]/30 transition-all duration-500 ease-in-out overflow-hidden"
     :class="menuAbierto && tieneSubcategorias ? 'min-h-[240px] shadow-xl border-[#CE1126]/30' : 'min-h-[104px]'">
 
     <!-- CARA FRONTAL: Contenido principal -->
@@ -13,7 +13,7 @@
       class="absolute inset-0 w-full p-6 flex items-center space-x-4 text-left cursor-pointer focus:outline-none">
       <!-- CONTENEDOR DEL ICONO / IMAGEN -->
       <div
-        class="flex-shrink-0 w-14 h-14 bg-white text-[#CE1126] rounded-xl flex items-center justify-center overflow-hidden transition-colors duration-300"
+        class="flex-shrink-0 w-18 h-18 bg-white text-[#CE1126] rounded-xl flex items-center justify-center overflow-hidden transition-colors duration-300"
         :class="{ 'bg-[#AB1A2D] text-white': menuAbierto }">
 
         <!-- Si se pasa una imagen (como ImagenInodoro), se muestra aquí -->
