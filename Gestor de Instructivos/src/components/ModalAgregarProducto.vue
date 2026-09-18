@@ -102,7 +102,7 @@ const guardarNuevoProducto = () => {
       <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
         <h3 class="text-lg font-bold text-gray-800">Añadir Nuevo Registro</h3>
         <button @click="emit('cerrar')" :disabled="enviandoFormulario"
-          class="text-gray-400 hover:text-[#CE1126] transition-colors disabled:opacity-50">
+          class="text-gray-400 hover:text-[#CE1126] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
             class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -117,7 +117,8 @@ const guardarNuevoProducto = () => {
         <div>
           <label class="block text-sm font-semibold text-gray-900 mb-1">Nombre del Producto / Modelo</label>
           <input v-model="nombre" type="text" placeholder="Ej: Producto Nuevo..."
-            class="w-full px-4 py-2 bg-white text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] outline-none transition-colors"
+            :disabled="enviandoFormulario"
+            class="w-full px-4 py-2 bg-white text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#CE1126] focus:border-[#CE1126] outline-none transition-colors disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
             required />
         </div>
 
@@ -146,26 +147,32 @@ const guardarNuevoProducto = () => {
         </div>
 
         <!-- PDF con Icono y Nombre Dinámico -->
-        <div class="relative flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-lg p-6 bg-white hover:border-[#CE1126] transition-colors cursor-pointer group">
-          <!-- Input original intacto (oculto cubriendo todo el contenedor) -->
+        <div 
+          class="relative flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-lg p-6 bg-white transition-colors group"
+          :class="enviandoFormulario ? 'bg-gray-50 opacity-70 cursor-not-allowed' : 'hover:border-[#CE1126] cursor-pointer'">
+          
+          <!-- Input original intacto -->
           <input 
             type="file" 
             accept="application/pdf" 
             @change="manejarSubidaArchivo"
-            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            :disabled="enviandoFormulario"
+            class="absolute inset-0 w-full h-full opacity-0 z-10"
+            :class="enviandoFormulario ? 'cursor-not-allowed' : 'cursor-pointer'"
             required 
           />
           
           <!-- Contenido visual con el icono y cambio dinámico -->
           <div class="flex flex-col items-center text-center pointer-events-none">
-            <div class="p-3 bg-[#CE1126]/10 text-[#CE1126] rounded-full mb-2 group-hover:bg-[#CE1126]/25 transition-colors">
+            <div class="p-3 bg-[#CE1126]/10 text-[#CE1126] rounded-full mb-2 transition-colors"
+                 :class="!enviandoFormulario ? 'group-hover:bg-[#CE1126]/25' : 'opacity-70'">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
               </svg>
             </div>
             <label class="block text-sm font-semibold text-gray-900 mb-1">Archivo PDF</label>
             <p class="text-xs text-gray-500">
-              <span v-if="!nombreArchivo">Arrastra tu archivo aquí o <span class="text-[#CE1126] font-medium">haz clic para buscar</span></span>
+              <span v-if="!nombreArchivo">Arrastra tu archivo aquí o <span :class="enviandoFormulario ? 'text-gray-500' : 'text-[#CE1126] font-medium'">haz clic para buscar</span></span>
               <span v-else class="text-gray-800 font-semibold flex items-center gap-1">
                 📄 {{ nombreArchivo }}
               </span>
@@ -188,9 +195,9 @@ const guardarNuevoProducto = () => {
         <!-- Botones -->
         <div class="pt-4 flex justify-end gap-3">
           <button type="button" @click="emit('cerrar')" :disabled="enviandoFormulario"
-            class="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg disabled:opacity-50">Cancelar</button>
+            class="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">Cancelar</button>
           <button type="submit" :disabled="enviandoFormulario"
-            class="px-4 py-2 text-sm font-semibold text-white bg-[#CE1126] hover:bg-[#AB1A2D] rounded-lg disabled:bg-[#CE1126]/50 transition-colors">
+            class="px-4 py-2 text-sm font-semibold text-white bg-[#CE1126] hover:bg-[#AB1A2D] rounded-lg disabled:bg-[#CE1126]/50 disabled:cursor-not-allowed transition-colors">
             {{ enviandoFormulario ? 'Guardando...' : 'Guardar Producto' }}
           </button>
         </div>

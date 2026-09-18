@@ -1,10 +1,13 @@
 require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2/promise'); // Modificado para usar promesas
+const mysql = require('mysql2/promise');
 const cors = require('cors');
 const path = require('path'); 
 const fs = require('fs');
 const multer = require('multer');
+
+// 1. IMPORTAR BCRYPT
+const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -16,7 +19,6 @@ app.use(express.json());
 // CONEXIÓN A MYSQL (POOL OPTIMIZADO)
 // ==========================================
 const db = mysql.createPool({
-  // En tu .env usa '127.0.0.1' en lugar de 'localhost' para acelerar la red
   host: process.env.DB_HOST || '127.0.0.1',
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -24,11 +26,10 @@ const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  enableKeepAlive: true,        // Mantiene activa la conexión TCP
-  keepAliveInitialDelay: 10000   // Envía pings para evitar el cierre por inactividad
+  enableKeepAlive: true,        
+  keepAliveInitialDelay: 10000   
 });
 
-// Comprobar la conexión al iniciar
 (async () => {
   try {
     const connection = await db.getConnection();
@@ -59,23 +60,60 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+
 // ==========================================
-// RUTA: Login
+// RUTA: Crear Usuario (NUEVA - Necesaria para encriptar la primera vez)
+// ==========================================
+app.post('/api/usuarios', async (req, res) => {
+  const { name, email, password, role } = req.body;
+
+  try {
+    // 2. HASHEAR LA CONTRASEÑA ANTES DE GUARDARLA
+    // El '10' es el número de rondas de seguridad (salt rounds)
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const query = 'INSERT INTO usuarios (name, email, password, role) VALUES (?, ?, ?, ?)';
+    await db.query(query, [name, email, hashPassword, role || 'usuario']);
+
+    res.status(201).json({ message: 'Usuario creado exitosamente con contraseña segura' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al crear el usuario' });
+  }
+});
+
+
+// ==========================================
+// RUTA: Login (MODIFICADA PARA LEER HASH)
 // ==========================================
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
-  const query = 'SELECT * FROM usuarios WHERE email = ? AND password = ?';
+  
+  // 3. BUSCAR AL USUARIO SOLO POR EMAIL (no podemos buscar por password directamente)
+  const query = 'SELECT * FROM usuarios WHERE email = ?';
   
   try {
-    const [results] = await db.query(query, [email, password]);
+    const [results] = await db.query(query, [email]);
 
-    if (results.length > 0) {
-      const user = results[0];
+    // Si el correo no existe en la base de datos
+    if (results.length === 0) {
+      return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
+    }
+
+    const user = results[0];
+
+    // 4. COMPARAR LA CONTRASEÑA ENVIADA CON EL HASH GUARDADO
+    // bcrypt.compare toma la contraseña limpia y el hash de la BD y verifica si coinciden
+    const contrasenaValida = await bcrypt.compare(password, user.password);
+
+    if (contrasenaValida) {
+      // 5. ACCESO CONCEDIDO
       res.status(200).json({
         message: 'Login exitoso',
         user: { name: user.name, email: user.email, role: user.role }
       });
     } else {
+      // CONTRASEÑA INCORRECTA
       res.status(401).json({ message: 'Correo o contraseña incorrectos' });
     }
   } catch (err) {
@@ -83,6 +121,7 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ message: 'Error en el servidor' });
   }
 });
+
 
 // ==========================================
 // RUTA: Descargar PDF
@@ -179,7 +218,7 @@ app.delete('/api/productos/:id', async (req, res) => {
 });
 
 // Iniciar el servidor
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor backend corriendo en el puerto ${PORT}`);
 });
